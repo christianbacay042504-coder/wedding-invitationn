@@ -223,6 +223,10 @@ function GateExteriorFloralBed() {
 }
 
 function EntranceBloomField({ opening, reducedMotion }: { opening: boolean; reducedMotion: boolean }) {
+  const isMobile = window.innerWidth < 768;
+
+  if (isMobile) return null;
+
   return (
     <div
       className={`entrance-bloom-field ${opening ? "is-opening" : ""} ${reducedMotion ? "is-reduced" : ""}`}
@@ -260,9 +264,10 @@ function EntranceBloomField({ opening, reducedMotion }: { opening: boolean; redu
 
 function PremiumParticleField({ active, reducedMotion }: { active: boolean; reducedMotion: boolean }) {
   const hostRef = useRef<HTMLDivElement>(null);
+  const isMobile = window.innerWidth < 768;
 
   useEffect(() => {
-    if (reducedMotion || !hostRef.current) return;
+    if (reducedMotion || !hostRef.current || isMobile) return;
     let cancelled = false;
     let particleContainer: { destroy: () => void } | undefined;
 
@@ -296,7 +301,9 @@ function PremiumParticleField({ active, reducedMotion }: { active: boolean; redu
       cancelled = true;
       particleContainer?.destroy();
     };
-  }, [reducedMotion]);
+  }, [reducedMotion, isMobile]);
+
+  if (isMobile) return null;
 
   return (
     <div ref={hostRef} className={`premium-particles ${active ? "is-active" : ""}`} aria-hidden="true" />
@@ -317,9 +324,10 @@ function SakuraBranch({ className = "" }: { className?: string }) {
 
 function CinematicIntro({ reducedMotion }: { reducedMotion: boolean }) {
   const introRef = useRef<HTMLDivElement>(null);
+  const isMobile = window.innerWidth < 768;
 
   useLayoutEffect(() => {
-    if (reducedMotion || !introRef.current) return;
+    if (reducedMotion || !introRef.current || isMobile) return;
     const context = gsap.context(() => {
       const timeline = gsap.timeline({ defaults: { ease: "power3.out" } });
       timeline
@@ -333,7 +341,9 @@ function CinematicIntro({ reducedMotion }: { reducedMotion: boolean }) {
         .to(".premium-intro__title", { opacity: 0, y: -18, filter: "blur(5px)", duration: 0.72, ease: "power2.in" }, 4.54);
     }, introRef);
     return () => context.revert();
-  }, [reducedMotion]);
+  }, [reducedMotion, isMobile]);
+
+  if (isMobile) return null;
 
   return (
     <div ref={introRef} className={`cinematic-intro premium-cinematic-intro ${reducedMotion ? "is-reduced" : ""}`} aria-hidden="true">
@@ -491,15 +501,11 @@ export default function Home() {
 
   useEffect(() => {
     if (!opened || reduceMotion) return;
-    // Optimize Lenis for mobile touch scrolling
+    // Disable Lenis on mobile - use native scrolling for better performance
     const isMobile = window.innerWidth < 768;
-    const lenis = new Lenis({
-      lerp: isMobile ? 0.1 : 0.085,
-      smoothWheel: true,
-      wheelMultiplier: isMobile ? 1 : 0.82,
-      touchMultiplier: isMobile ? 1.5 : 1.05,
-      smoothTouch: isMobile,
-    });
+    if (isMobile) return;
+
+    const lenis = new Lenis({ lerp: 0.085, smoothWheel: true, wheelMultiplier: 0.82, touchMultiplier: 1.05 });
     lenisRef.current = lenis;
     let frame = 0;
     const animate = (time: number) => {
@@ -517,16 +523,14 @@ export default function Home() {
   useEffect(() => {
     if (!opened || reduceMotion) return;
 
+    // Disable all parallax on mobile for performance
+    const isMobile = window.innerWidth < 768;
+    if (isMobile) return;
+
     // Cache DOM references to avoid repeated queries
     const sections = Array.from(document.querySelectorAll<HTMLElement>(".invitation-content > section"));
     const cover = document.querySelector<HTMLElement>(".cover-scroll-journey");
     const visibleSections = new Set<HTMLElement>();
-
-    // Mobile detection with resize listener
-    let isMobile = window.innerWidth < 768;
-    const handleResize = () => {
-      isMobile = window.innerWidth < 768;
-    };
 
     // IntersectionObserver to track visible sections and skip off-screen ones
     const sectionObserver = new IntersectionObserver(
@@ -557,8 +561,7 @@ export default function Home() {
       const scrollY = window.scrollY;
 
       // Skip update if scroll position hasn't changed significantly
-      const threshold = isMobile ? 2 : 0.5;
-      if (Math.abs(scrollY - lastScrollY) < threshold) {
+      if (Math.abs(scrollY - lastScrollY) < 0.5) {
         return;
       }
       lastScrollY = scrollY;
@@ -584,54 +587,43 @@ export default function Home() {
         cover.style.setProperty("--cover-progress", coverProgress.toFixed(4));
         cover.style.setProperty("--cover-backdrop-scale", (1.04 + coverProgress * 0.42).toFixed(3));
         setCoverVar("--cover-backdrop-y", coverProgress * -38);
-
-        // Reduce calculations on mobile
-        if (!isMobile) {
-          cover.style.setProperty("--cover-tunnel-opacity", (1 - Math.max(0, coverProgress - 0.54) * 1.25).toFixed(3));
-          cover.style.setProperty("--cover-tunnel-far-scale", (1 + coverProgress * 0.72).toFixed(3));
-          cover.style.setProperty("--cover-tunnel-middle-scale", (1.08 + coverProgress * 1.55).toFixed(3));
-          cover.style.setProperty("--cover-tunnel-near-scale", (1.16 + coverProgress * 2.65).toFixed(3));
-          cover.style.setProperty("--cover-tunnel-near-opacity", (0.58 + Math.max(0, 0.52 - coverProgress) * 0.7).toFixed(3));
-        }
-
+        cover.style.setProperty("--cover-tunnel-opacity", (1 - Math.max(0, coverProgress - 0.54) * 1.25).toFixed(3));
+        cover.style.setProperty("--cover-tunnel-far-scale", (1 + coverProgress * 0.72).toFixed(3));
+        cover.style.setProperty("--cover-tunnel-middle-scale", (1.08 + coverProgress * 1.55).toFixed(3));
+        cover.style.setProperty("--cover-tunnel-near-scale", (1.16 + coverProgress * 2.65).toFixed(3));
+        cover.style.setProperty("--cover-tunnel-near-opacity", (0.58 + Math.max(0, 0.52 - coverProgress) * 0.7).toFixed(3));
         cover.style.setProperty("--cover-gateway-opacity", (Math.max(0, Math.min(1, (coverProgress - 0.27) / 0.38))).toFixed(3));
         cover.style.setProperty("--cover-gateway-scale", (0.72 + Math.max(0, Math.min(1, (coverProgress - 0.27) / 0.38)) * 0.3).toFixed(3));
-
-        // Reduce complex parallax calculations on mobile
-        if (!isMobile) {
-          setCoverVar("--cover-bed-y", coverProgress * 128);
-          cover.style.setProperty("--cover-bed-scale", (1 + coverProgress * 1.35).toFixed(3));
-          setCoverVar("--cover-left-x", coverProgress * -118);
-          setCoverVar("--cover-left-y", coverProgress * 92);
-          cover.style.setProperty("--cover-left-scale", (1 + coverProgress * 1.5).toFixed(3));
-          setCoverVar("--cover-right-x", coverProgress * 118);
-          setCoverVar("--cover-right-y", coverProgress * 92);
-          cover.style.setProperty("--cover-right-scale", (1 + coverProgress * 1.5).toFixed(3));
-          setCoverVar("--cover-vine-x", coverProgress * 86);
-          setCoverVar("--cover-vine-y", coverProgress * -74);
-          cover.style.setProperty("--cover-vine-scale", (1 + coverProgress * 0.78).toFixed(3));
-          cover.style.setProperty("--cover-vine-opacity", (0.78 - coverProgress * 0.58).toFixed(3));
-          cover.style.setProperty("--cover-floral-opacity", (0.08 + revealEase * 0.92).toFixed(3));
-          cover.style.setProperty("--cover-floral-scale", (1.02 + revealEase * 0.12).toFixed(3));
-          cover.style.setProperty("--cover-accent-opacity", (0.92 - revealEase * 0.72).toFixed(3));
-          cover.style.setProperty("--cover-corridor-opacity", (0.98 - revealEase * 0.2).toFixed(3));
-          cover.style.setProperty("--cover-sparse-opacity", (0.96 - revealEase * 0.18).toFixed(3));
-          cover.style.setProperty("--cover-curtain-opacity", (1 - revealEase * 0.98).toFixed(3));
-          setCoverVar("--cover-curtain-left-x", -coverProgress * 220);
-          setCoverVar("--cover-curtain-right-x", coverProgress * 220);
-          setCoverVar("--cover-curtain-top-y", -coverProgress * 150);
-          setCoverVar("--cover-curtain-bottom-y", coverProgress * 170);
-          cover.style.setProperty("--cover-max-opacity", (0.96 - revealEase * 0.78).toFixed(3));
-          setCoverVar("--cover-max-left-x", -coverProgress * 155);
-          setCoverVar("--cover-max-right-x", coverProgress * 155);
-          setCoverVar("--cover-max-top-y", -coverProgress * 92);
-          setCoverVar("--cover-max-bottom-y", coverProgress * 118);
-          cover.style.setProperty("--cover-max-scale", (1.02 + revealEase * 0.18).toFixed(3));
-          setCoverVar("--cover-mist-scale", 1 + revealEase * 0.24);
-          cover.style.setProperty("--cover-mist-opacity", (revealEase * 0.72).toFixed(3));
-        }
-
-        // Keep essential effects for all devices
+        setCoverVar("--cover-bed-y", coverProgress * 128);
+        cover.style.setProperty("--cover-bed-scale", (1 + coverProgress * 1.35).toFixed(3));
+        setCoverVar("--cover-left-x", coverProgress * -118);
+        setCoverVar("--cover-left-y", coverProgress * 92);
+        cover.style.setProperty("--cover-left-scale", (1 + coverProgress * 1.5).toFixed(3));
+        setCoverVar("--cover-right-x", coverProgress * 118);
+        setCoverVar("--cover-right-y", coverProgress * 92);
+        cover.style.setProperty("--cover-right-scale", (1 + coverProgress * 1.5).toFixed(3));
+        setCoverVar("--cover-vine-x", coverProgress * 86);
+        setCoverVar("--cover-vine-y", coverProgress * -74);
+        cover.style.setProperty("--cover-vine-scale", (1 + coverProgress * 0.78).toFixed(3));
+        cover.style.setProperty("--cover-vine-opacity", (0.78 - coverProgress * 0.58).toFixed(3));
+        cover.style.setProperty("--cover-floral-opacity", (0.08 + revealEase * 0.92).toFixed(3));
+        cover.style.setProperty("--cover-floral-scale", (1.02 + revealEase * 0.12).toFixed(3));
+        cover.style.setProperty("--cover-accent-opacity", (0.92 - revealEase * 0.72).toFixed(3));
+        cover.style.setProperty("--cover-corridor-opacity", (0.98 - revealEase * 0.2).toFixed(3));
+        cover.style.setProperty("--cover-sparse-opacity", (0.96 - revealEase * 0.18).toFixed(3));
+        cover.style.setProperty("--cover-curtain-opacity", (1 - revealEase * 0.98).toFixed(3));
+        setCoverVar("--cover-curtain-left-x", -coverProgress * 220);
+        setCoverVar("--cover-curtain-right-x", coverProgress * 220);
+        setCoverVar("--cover-curtain-top-y", -coverProgress * 150);
+        setCoverVar("--cover-curtain-bottom-y", coverProgress * 170);
+        cover.style.setProperty("--cover-max-opacity", (0.96 - revealEase * 0.78).toFixed(3));
+        setCoverVar("--cover-max-left-x", -coverProgress * 155);
+        setCoverVar("--cover-max-right-x", coverProgress * 155);
+        setCoverVar("--cover-max-top-y", -coverProgress * 92);
+        setCoverVar("--cover-max-bottom-y", coverProgress * 118);
+        cover.style.setProperty("--cover-max-scale", (1.02 + revealEase * 0.18).toFixed(3));
+        setCoverVar("--cover-mist-scale", 1 + revealEase * 0.24);
+        cover.style.setProperty("--cover-mist-opacity", (revealEase * 0.72).toFixed(3));
         cover.style.setProperty("--cover-arch-opacity", (0.03 + revealEase * 0.97).toFixed(3));
         cover.style.setProperty("--cover-arch-scale", (0.88 + revealEase * 0.12).toFixed(3));
         setCoverVar("--cover-arch-y", 34 - revealEase * 34);
@@ -645,7 +637,6 @@ export default function Home() {
     };
 
     window.addEventListener("scroll", queueParallax, { passive: true });
-    window.addEventListener("resize", handleResize);
     window.addEventListener("resize", queueParallax);
     const lenis = lenisRef.current;
     lenis?.on("scroll", queueParallax);
@@ -653,7 +644,6 @@ export default function Home() {
 
     return () => {
       window.removeEventListener("scroll", queueParallax);
-      window.removeEventListener("resize", handleResize);
       window.removeEventListener("resize", queueParallax);
       lenis?.off("scroll", queueParallax);
       if (frame) window.cancelAnimationFrame(frame);

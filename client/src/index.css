@@ -4924,9 +4924,33 @@ footer span {
 /* Mobile-specific optimizations */
 @media (max-width: 768px) {
 
+  /* Disable all complex animations on mobile */
+  .entrance-petal,
+  .entrance-sparkle,
+  .butterfly,
+  .sakura-blossom,
+  .cinematic-bird,
+  .cinematic-butterfly,
+  .flock-bird,
+  .cover-petal,
+  .foreground-flower,
+  .corner-flower-3d,
+  .sakura-branch {
+    animation: none !important;
+    opacity: 0.5;
+  }
+
+  /* Disable complex entrance animations */
+  .cinematic-intro,
+  .premium-intro__halo,
+  .foreground-floral-pass,
+  .cinematic-corner-florals {
+    display: none;
+  }
+
   /* Reduce heavy blur effects on mobile */
   .film-grain {
-    opacity: 0.03;
+    opacity: 0.02;
   }
 
   /* Optimize parallax for mobile - reduce intensity */
@@ -4938,11 +4962,11 @@ footer span {
 
   /* Reduce box shadows on mobile */
   .gate-arch {
-    box-shadow: 0 8px 20px rgb(48 86 120 / .04);
+    box-shadow: 0 4px 12px rgb(48 86 120 / .04);
   }
 
   .cover-arch--oval {
-    box-shadow: 0 12px 24px rgb(48 86 120 / .08);
+    box-shadow: 0 6px 16px rgb(48 86 120 / .06);
   }
 
   /* Optimize backdrop-filter for mobile */
@@ -4951,31 +4975,25 @@ footer span {
     -webkit-backdrop-filter: none;
   }
 
-  /* Reduce animation complexity on mobile */
-  .entrance-petal {
-    animation-duration: 8s;
-  }
-
-  .entrance-sparkle {
-    animation-duration: 6s;
-  }
-
-  /* Optimize tunnel blur effects */
-  .cover-tunnel-plane--far {
-    filter: saturate(.86) brightness(.72);
-  }
-
-  .cover-tunnel-plane--middle {
-    filter: saturate(1.08) brightness(.82);
-  }
-
+  /* Disable tunnel effects on mobile */
+  .cover-tunnel-plane--far,
+  .cover-tunnel-plane--middle,
   .cover-tunnel-plane--near {
-    filter: saturate(1.2) brightness(.98);
+    display: none;
+  }
+
+  /* Disable complex cover effects on mobile */
+  .cover-corridor-florals,
+  .cover-sparse-florals,
+  .cover-botanical-accents,
+  .cover-max-floral,
+  .cover-closed-floral-curtain {
+    display: none;
   }
 
   /* Reduce heavy gradients on mobile */
   .cover-mist {
-    filter: none;
+    display: none;
   }
 
   /* Optimize image rendering */
@@ -4989,7 +5007,7 @@ footer span {
     bottom: 16px;
     width: 48px;
     height: 48px;
-    box-shadow: 0 6px 16px rgb(31 62 87 / .18);
+    box-shadow: 0 4px 12px rgb(31 62 87 / .12);
   }
 
   /* Ensure stable fixed positioning */
@@ -4999,6 +5017,15 @@ footer span {
 
   .film-grain {
     transform: translateZ(0);
+  }
+
+  /* Simplify gate animations on mobile */
+  .gate-image {
+    transition: transform 0.8s ease;
+  }
+
+  .invitation-gate.is-opening .gate-image {
+    transform: scale(1.3);
   }
 }
 
