@@ -219,6 +219,7 @@ export default defineConfig({
   build: {
     outDir: path.resolve(import.meta.dirname, "dist"),
     emptyOutDir: true,
+    copyPublicDir: true,
   },
   server: {
     port: 3000,
