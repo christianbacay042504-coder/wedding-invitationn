@@ -220,6 +220,7 @@ export default defineConfig({
     outDir: path.resolve(import.meta.dirname, "dist"),
     emptyOutDir: true,
     copyPublicDir: true,
+    assetsInlineLimit: 0,
   },
   server: {
     port: 3000,
