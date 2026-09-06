@@ -27,7 +27,7 @@ import { getParallaxOffsets, getParallaxProgress } from "@/lib/parallax";
 
 const localAssetBase = import.meta.env.VITE_INVITATION_ASSET_BASE?.replace(/\/$/, "");
 const resolveAsset = (localFile: string, managedFile: string) =>
-  localAssetBase ? `${localAssetBase}/${localFile}` : `/manus-storage/${managedFile}`;
+  localAssetBase ? `${localAssetBase}/${localFile}` : `/assets/${localFile}`;
 
 const asset = {
   cover: resolveAsset("ivona-user-fountain-garden.webp", "ivona-user-fountain-garden_76b2a273.webp"),
