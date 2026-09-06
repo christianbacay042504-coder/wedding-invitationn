@@ -509,11 +509,47 @@ export default function Home() {
   useEffect(() => {
     if (!opened || reduceMotion) return;
 
+    // Cache DOM references to avoid repeated queries
+    const sections = Array.from(document.querySelectorAll<HTMLElement>(".invitation-content > section"));
+    const cover = document.querySelector<HTMLElement>(".cover-scroll-journey");
+    const visibleSections = new Set<HTMLElement>();
+
+    // IntersectionObserver to track visible sections and skip off-screen ones
+    const sectionObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            visibleSections.add(entry.target as HTMLElement);
+          } else {
+            visibleSections.delete(entry.target as HTMLElement);
+            // Reset parallax for off-screen sections
+            (entry.target as HTMLElement).style.setProperty("--parallax-progress", "0");
+            (entry.target as HTMLElement).style.setProperty("--parallax-background-y", "0px");
+            (entry.target as HTMLElement).style.setProperty("--parallax-far-y", "0px");
+            (entry.target as HTMLElement).style.setProperty("--parallax-near-y", "0px");
+          }
+        });
+      },
+      { rootMargin: "20%" }
+    );
+
+    sections.forEach((section) => sectionObserver.observe(section));
+
     let frame = 0;
+    let lastScrollY = 0;
     const updateParallax = () => {
       frame = 0;
       const viewportHeight = window.innerHeight || 1;
-      document.querySelectorAll<HTMLElement>(".invitation-content > section").forEach((section) => {
+      const scrollY = window.scrollY;
+
+      // Skip update if scroll position hasn't changed significantly
+      if (Math.abs(scrollY - lastScrollY) < 0.5) {
+        return;
+      }
+      lastScrollY = scrollY;
+
+      // Only update visible sections
+      visibleSections.forEach((section) => {
         const rect = section.getBoundingClientRect();
         const progress = getParallaxProgress(rect.top, rect.height, viewportHeight);
         const offsets = getParallaxOffsets(progress);
@@ -523,7 +559,6 @@ export default function Home() {
         section.style.setProperty("--parallax-near-y", `${offsets.nearY.toFixed(2)}px`);
       });
 
-      const cover = document.querySelector<HTMLElement>(".cover-scroll-journey");
       if (cover) {
         const rect = cover.getBoundingClientRect();
         const scrollRange = Math.max(cover.offsetHeight - viewportHeight, 1);
@@ -594,8 +629,12 @@ export default function Home() {
       window.removeEventListener("resize", queueParallax);
       lenis?.off("scroll", queueParallax);
       if (frame) window.cancelAnimationFrame(frame);
-      document.querySelectorAll<HTMLElement>(".invitation-content > section").forEach((section) => {
+      sectionObserver.disconnect();
+      sections.forEach((section) => {
         section.style.removeProperty("--parallax-progress");
+        section.style.removeProperty("--parallax-background-y");
+        section.style.removeProperty("--parallax-far-y");
+        section.style.removeProperty("--parallax-near-y");
       });
     };
   }, [opened, reduceMotion]);
