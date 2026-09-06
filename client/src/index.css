@@ -60,6 +60,7 @@ body {
   color: var(--ink);
   font-family: "DM Sans", Arial, sans-serif;
   overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
 }
 
 button,
@@ -73,6 +74,7 @@ button,
 a,
 select {
   -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
 button {
@@ -82,6 +84,7 @@ button {
 img {
   display: block;
   max-width: 100%;
+  height: auto;
 }
 
 a {
@@ -1400,6 +1403,25 @@ a {
 
   .gate-content .couple-names {
     font-size: 42px;
+  }
+
+  /* Further reduce effects on small mobile */
+  .corner-flower-3d {
+    filter: saturate(1.1) contrast(1.05) brightness(1.05);
+  }
+
+  .sakura-limb {
+    filter: none;
+  }
+
+  /* Optimize floating animations */
+  .butterfly {
+    animation-duration: 7s;
+  }
+
+  /* Reduce particle complexity */
+  .entrance-bloom-field {
+    opacity: 0.8;
   }
 }
 
@@ -4073,6 +4095,9 @@ footer span {
   background: #294d69;
   color: #f9fdff;
   box-shadow: 0 9px 25px rgb(31 62 87 / .26);
+  will-change: transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
   transition: transform 160ms ease, background 160ms ease;
 }
 
@@ -4843,12 +4868,137 @@ footer span {
   .portrait-wrap img {
     min-height: 296px;
   }
+
+  /* Extra small mobile optimizations */
+  .gate-content h1 {
+    font-size: 38px;
+  }
+
+  .cover-content h1 {
+    font-size: 42px;
+  }
+
+  /* Reduce heavy effects on very small screens */
+  .foreground-flower {
+    filter: saturate(1.15) contrast(1.05) brightness(1.05);
+  }
+
+  .cinematic-bird,
+  .cinematic-butterfly,
+  .flock-bird {
+    display: none;
+  }
+}
+
+/* Medium mobile (375px - 414px) */
+@media (min-width: 375px) and (max-width: 414px) {
+  .gate-arch {
+    width: 78vw;
+    padding-inline: 26px;
+  }
+
+  .cover-arch {
+    width: calc(100% - 48px);
+  }
+}
+
+/* Large mobile (415px - 480px) */
+@media (min-width: 415px) and (max-width: 480px) {
+  .gate-arch {
+    width: 74vw;
+    padding-inline: 30px;
+  }
+
+  .cover-arch {
+    width: calc(100% - 56px);
+  }
 }
 
 @media (min-width: 600px) {
   .invitation-content {
     margin-block: 22px;
     border-radius: 4px;
+  }
+}
+
+/* Mobile-specific optimizations */
+@media (max-width: 768px) {
+
+  /* Reduce heavy blur effects on mobile */
+  .film-grain {
+    opacity: 0.03;
+  }
+
+  /* Optimize parallax for mobile - reduce intensity */
+  .invitation-content>section {
+    --parallax-background-y: 0px;
+    --parallax-far-y: 0px;
+    --parallax-near-y: 0px;
+  }
+
+  /* Reduce box shadows on mobile */
+  .gate-arch {
+    box-shadow: 0 8px 20px rgb(48 86 120 / .04);
+  }
+
+  .cover-arch--oval {
+    box-shadow: 0 12px 24px rgb(48 86 120 / .08);
+  }
+
+  /* Optimize backdrop-filter for mobile */
+  .backdrop-filter-blur {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  /* Reduce animation complexity on mobile */
+  .entrance-petal {
+    animation-duration: 8s;
+  }
+
+  .entrance-sparkle {
+    animation-duration: 6s;
+  }
+
+  /* Optimize tunnel blur effects */
+  .cover-tunnel-plane--far {
+    filter: saturate(.86) brightness(.72);
+  }
+
+  .cover-tunnel-plane--middle {
+    filter: saturate(1.08) brightness(.82);
+  }
+
+  .cover-tunnel-plane--near {
+    filter: saturate(1.2) brightness(.98);
+  }
+
+  /* Reduce heavy gradients on mobile */
+  .cover-mist {
+    filter: none;
+  }
+
+  /* Optimize image rendering */
+  img {
+    image-rendering: -webkit-optimize-contrast;
+  }
+
+  /* Optimize fixed music toggle for mobile */
+  .music-toggle {
+    right: 16px;
+    bottom: 16px;
+    width: 48px;
+    height: 48px;
+    box-shadow: 0 6px 16px rgb(31 62 87 / .18);
+  }
+
+  /* Ensure stable fixed positioning */
+  .invitation-gate {
+    transform: translateZ(0);
+  }
+
+  .film-grain {
+    transform: translateZ(0);
   }
 }
 
