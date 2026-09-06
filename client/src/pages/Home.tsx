@@ -223,7 +223,7 @@ function GateExteriorFloralBed() {
 }
 
 function EntranceBloomField({ opening, reducedMotion }: { opening: boolean; reducedMotion: boolean }) {
-  const isMobile = window.innerWidth < 768;
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
 
   if (isMobile) return null;
 
@@ -264,7 +264,7 @@ function EntranceBloomField({ opening, reducedMotion }: { opening: boolean; redu
 
 function PremiumParticleField({ active, reducedMotion }: { active: boolean; reducedMotion: boolean }) {
   const hostRef = useRef<HTMLDivElement>(null);
-  const isMobile = window.innerWidth < 768;
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
 
   useEffect(() => {
     if (reducedMotion || !hostRef.current || isMobile) return;
@@ -324,7 +324,7 @@ function SakuraBranch({ className = "" }: { className?: string }) {
 
 function CinematicIntro({ reducedMotion }: { reducedMotion: boolean }) {
   const introRef = useRef<HTMLDivElement>(null);
-  const isMobile = window.innerWidth < 768;
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
 
   useLayoutEffect(() => {
     if (reducedMotion || !introRef.current || isMobile) return;
@@ -502,10 +502,16 @@ export default function Home() {
   useEffect(() => {
     if (!opened || reduceMotion) return;
     // Disable Lenis on mobile - use native scrolling for better performance
-    const isMobile = window.innerWidth < 768;
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
     if (isMobile) return;
 
-    const lenis = new Lenis({ lerp: 0.085, smoothWheel: true, wheelMultiplier: 0.82, touchMultiplier: 1.05 });
+    const lenis = new Lenis({
+      lerp: 0.085,
+      smoothWheel: true,
+      wheelMultiplier: 0.82,
+      touchMultiplier: 1.05,
+      smoothTouch: false // Disable smooth touch for better mobile performance
+    });
     lenisRef.current = lenis;
     let frame = 0;
     const animate = (time: number) => {
@@ -524,7 +530,7 @@ export default function Home() {
     if (!opened || reduceMotion) return;
 
     // Disable all parallax on mobile for performance
-    const isMobile = window.innerWidth < 768;
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
     if (isMobile) return;
 
     // Cache DOM references to avoid repeated queries
@@ -548,7 +554,7 @@ export default function Home() {
           }
         });
       },
-      { rootMargin: "20%" }
+      { rootMargin: "20%", threshold: 0.1 }
     );
 
     sections.forEach((section) => sectionObserver.observe(section));

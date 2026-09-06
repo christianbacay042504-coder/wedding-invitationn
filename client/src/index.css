@@ -54,6 +54,12 @@ html {
   background: #f8fbfd;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
 body {
   margin: 0;
   background: #f8fbfd;
@@ -61,6 +67,8 @@ body {
   font-family: "DM Sans", Arial, sans-serif;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 button,
@@ -4783,6 +4791,568 @@ footer span {
 
   to {
     transform: rotate(40deg) scaleY(1.1);
+  }
+}
+
+/* ==========================================
+   MOBILE OPTIMIZATIONS
+   ========================================== */
+
+/* Disable parallax on mobile for better scrolling performance */
+@media (max-width: 768px) {
+  .invitation-content>section {
+    --parallax-progress: 0;
+    --parallax-background-y: 0px;
+    --parallax-far-y: 0px;
+    --parallax-near-y: 0px;
+    background-position: center 50%;
+  }
+
+  .invitation-content>section>.cover-trailing-vine,
+  .invitation-content>section>.butterfly-constellation,
+  .invitation-content>section>.event-engraving,
+  .invitation-content>section>.attire-engraving,
+  .invitation-content>section>.soundtrack-engraving,
+  .invitation-content>section>.story-corner-spray,
+  .invitation-content>section>.gallery-sparkle,
+  .invitation-content>section>.closing-star,
+  .invitation-content>section>.paper-orbit {
+    translate: 0 0;
+  }
+
+  .invitation-content>section>.cover-arch,
+  .invitation-content>section>.endless-arch,
+  .invitation-content>section>.couple-card,
+  .invitation-content>section>.event-list>div,
+  .invitation-content>section>.attire-grid>div,
+  .invitation-content>section>.gallery-grid>div,
+  .invitation-content>section>.location-content,
+  .invitation-content>section>.story-image-wrap,
+  .invitation-content>section>.story-list>div,
+  .invitation-content>section>.soundtrack-card,
+  .invitation-content>section>.timeline-list>div,
+  .invitation-content>section>.closing-content,
+  .invitation-content>section .section-heading,
+  .invitation-content>section .intro-copy,
+  .invitation-content>section .gallery-note {
+    translate: 0 0;
+  }
+
+  .film-section__canvas {
+    translate: 0 0;
+    scale: 1;
+  }
+}
+
+/* Optimize animations for mobile */
+@media (max-width: 768px) {
+
+  /* Reduce animation complexity */
+  .butterfly {
+    animation-duration: 8s;
+  }
+
+  .entrance-petal {
+    animation-duration: 8s;
+  }
+
+  .cover-petal {
+    animation-duration: 10s;
+  }
+
+  /* Reduce shadow complexity */
+  .event-card,
+  .attire-card,
+  .location-card,
+  .soundtrack-card,
+  .detail-card {
+    box-shadow: 0 8px 16px rgb(54 91 122 / .08);
+  }
+
+  /* Optimize backdrop-filter */
+  .event-section--lakeside .event-card,
+  .attire-section--sundial .attire-card,
+  .location-section--garden-gate .location-card,
+  .soundtrack-section--fountain .soundtrack-card {
+    backdrop-filter: none;
+  }
+
+  /* Reduce blur effects */
+  .cover-tunnel-plane--far {
+    filter: saturate(.86) brightness(.72);
+  }
+
+  .cover-tunnel-plane--middle {
+    filter: saturate(1.08) brightness(.82);
+  }
+
+  .cover-tunnel-plane--near {
+    filter: saturate(1.2) brightness(.98);
+  }
+}
+
+/* Mobile-specific layout fixes */
+@media (max-width: 768px) {
+
+  /* Ensure proper touch target sizes */
+  button,
+  a,
+  select {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Optimize text rendering */
+  * {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Reduce GPU compositing where possible */
+  .music-toggle {
+    will-change: auto;
+  }
+
+  /* Optimize image rendering */
+  img {
+    image-rendering: -webkit-optimize-contrast;
+  }
+
+  /* Ensure proper stacking context */
+  .invitation-content {
+    transform: translateZ(0);
+  }
+}
+
+/* Small mobile devices (320px - 375px) */
+@media (max-width: 375px) {
+  .gate-arch {
+    width: 85vw;
+    min-height: 80svh;
+    padding: 60px 20px 50px;
+  }
+
+  .gate-content .couple-names {
+    font-size: 36px;
+  }
+
+  .cover-arch {
+    width: calc(100% - 30px);
+    min-height: 80svh;
+    padding: 80px 20px 60px;
+  }
+
+  .cover-content h1 {
+    font-size: 42px;
+  }
+
+  .endless-arch {
+    width: 100%;
+    min-height: 700px;
+    padding: 40px 20px 35px;
+  }
+
+  .endless-arch h2 {
+    font-size: 38px;
+  }
+
+  .couple-card {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .couple-card--bride {
+    grid-template-columns: 1fr;
+  }
+
+  .portrait-wrap {
+    min-height: 280px;
+  }
+
+  .event-card {
+    padding: 25px 20px 20px;
+  }
+
+  .event-card h3 {
+    font-size: 28px;
+  }
+
+  .attire-card {
+    min-height: 180px;
+    padding: 25px 20px;
+  }
+
+  .gallery-grid {
+    gap: 6px;
+  }
+
+  .gallery-tile img {
+    min-height: 140px;
+  }
+
+  .gallery-tile--1 img,
+  .gallery-tile--6 img,
+  .gallery-tile--9 img {
+    min-height: 286px;
+  }
+
+  .countdown-grid {
+    gap: 4px;
+  }
+
+  .countdown-grid>div {
+    padding: 10px 2px 8px;
+  }
+
+  .countdown-grid strong {
+    font-size: 24px;
+  }
+
+  .timeline-item {
+    grid-template-columns: 70px 1fr;
+    gap: 12px;
+  }
+
+  .timeline-item__time {
+    width: 70px;
+    height: 50px;
+    font-size: 10px;
+  }
+
+  .timeline-item h3 {
+    font-size: 22px;
+  }
+}
+
+/* Medium mobile devices (376px - 414px) */
+@media (min-width: 376px) and (max-width: 414px) {
+  .gate-arch {
+    width: 80vw;
+    padding: 65px 24px 55px;
+  }
+
+  .cover-arch {
+    padding: 85px 24px 65px;
+  }
+
+  .endless-arch {
+    padding: 45px 24px 40px;
+  }
+}
+
+/* Large mobile devices (415px - 768px) */
+@media (min-width: 415px) and (max-width: 768px) {
+  .gate-arch {
+    width: 75vw;
+  }
+
+  .cover-arch {
+    padding: 90px 28px 70px;
+  }
+}
+
+/* Mobile-specific navigation and fixed elements */
+@media (max-width: 768px) {
+  .music-toggle {
+    right: 20px;
+    bottom: 20px;
+    width: 48px;
+    height: 48px;
+  }
+
+  /* Ensure fixed elements don't overlap content */
+  .music-toggle.is-active::after {
+    animation: none;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .invitation-content>section {
+    --parallax-progress: 0;
+    --parallax-background-y: 0px;
+    --parallax-far-y: 0px;
+    --parallax-near-y: 0px;
+  }
+
+  .cover-scroll-journey {
+    min-height: 100svh;
+  }
+
+  .cover-parallax-stage {
+    position: relative;
+  }
+
+  .cover-parallax-stage>.cover-arch {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  .cover-parallax-stage .cover-content {
+    opacity: 1;
+    transform: none;
+  }
+
+  .cinematic-intro.is-reduced .foreground-flower,
+  .cinematic-intro.is-reduced .corner-flower-3d,
+  .cinematic-intro.is-reduced .sakura-branch {
+    animation: none;
+    opacity: .48;
+    transform: none;
+  }
+
+  .cinematic-intro.is-reduced .cinematic-intro__scene,
+  .cinematic-intro.is-reduced .cinematic-intro__title,
+  .cinematic-intro.is-reduced .cinematic-bird,
+  .cinematic-intro.is-reduced .cinematic-butterfly,
+  .cinematic-intro.is-reduced .flock-bird {
+    animation: none;
+  }
+
+  .entrance-bloom-field.is-reduced .entrance-petal,
+  .entrance-bloom-field.is-reduced .entrance-sparkle {
+    animation: none;
+    opacity: .18;
+  }
+
+  .music-toggle.is-active::after {
+    animation: none;
+  }
+}
+
+/* Low-end device optimizations */
+@media (max-width: 768px) and (max-resolution: 1dppx) {
+
+  /* Reduce particle effects */
+  .entrance-bloom-field {
+    opacity: 0.6;
+  }
+
+  .premium-particles {
+    display: none;
+  }
+
+  /* Simplify gradients */
+  .gate-wash {
+    background: radial-gradient(ellipse at 50% 44%, rgb(255 255 255 / .11), transparent 58%);
+  }
+
+  /* Reduce box shadows */
+  .invitation-content {
+    box-shadow: 0 0 40px rgb(53 91 127 / .06);
+  }
+
+  /* Optimize blur effects */
+  .cover-tunnel-plane--near {
+    filter: none;
+  }
+
+  .cover-tunnel-plane--middle {
+    filter: none;
+  }
+}
+
+/* Prevent horizontal scroll on mobile */
+@media (max-width: 768px) {
+  * {
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  .invitation-shell,
+  .invitation-content {
+    overflow-x: hidden;
+  }
+
+  /* Fix potential overflow issues */
+  .cover-scroll-journey {
+    overflow-x: hidden;
+  }
+
+  .cover-parallax-stage {
+    overflow-x: hidden;
+  }
+
+  .cover-closed-floral-curtain {
+    overflow-x: hidden;
+  }
+
+  .cover-corridor-florals {
+    overflow-x: hidden;
+  }
+
+  .cover-sparse-florals {
+    overflow-x: hidden;
+  }
+
+  .cover-botanical-accents {
+    overflow-x: hidden;
+  }
+
+  .cover-max-floral {
+    overflow-x: hidden;
+  }
+}
+
+/* Optimize touch interactions */
+@media (max-width: 768px) {
+
+  /* Remove delay on touch */
+  button,
+  a,
+  select {
+    touch-action: manipulation;
+  }
+
+  /* Improve button feedback */
+  .open-button:active,
+  .save-date-button:active,
+  .submit-button:active,
+  .soundtrack-button:active {
+    transform: scale(0.95);
+  }
+
+  /* Optimize form inputs */
+  .rsvp-form input,
+  .rsvp-form textarea,
+  .rsvp-form select {
+    font-size: 16px;
+    /* Prevent iOS zoom */
+  }
+}
+
+/* Mobile-specific viewport optimizations */
+@media (max-width: 768px) {
+
+  /* Ensure proper height calculation */
+  .cover-section,
+  .vow-section,
+  .event-section,
+  .attire-section,
+  .location-section,
+  .soundtrack-section,
+  .gallery-section,
+  .rsvp-section,
+  .story-section,
+  .details-section,
+  .closing-section {
+    min-height: auto;
+  }
+
+  .cover-section {
+    min-height: 100svh;
+  }
+
+  /* Simplify scroll journey on mobile */
+  .cover-scroll-journey {
+    min-height: 100svh;
+  }
+
+  .cover-parallax-stage {
+    position: relative;
+    min-height: 100svh;
+  }
+
+  .cover-parallax-backdrop {
+    transform: none !important;
+  }
+
+  .cover-tunnel {
+    display: none;
+  }
+
+  .cover-gateway {
+    display: none;
+  }
+
+  .cover-closed-floral-curtain {
+    display: none;
+  }
+
+  .cover-corridor-florals {
+    display: none;
+  }
+
+  .cover-sparse-florals {
+    display: none;
+  }
+
+  .cover-botanical-accents {
+    display: none;
+  }
+
+  .cover-max-floral {
+    display: none;
+  }
+
+  .cover-parallax-mist {
+    display: none;
+  }
+
+  .cover-arch {
+    opacity: 1;
+    transform: none;
+    position: relative;
+    inset: auto;
+  }
+
+  .cover-content {
+    opacity: 1;
+    transform: none;
+  }
+
+  .vow-section {
+    min-height: auto;
+    padding: 40px 20px;
+  }
+
+  .event-section {
+    padding-top: 60px;
+  }
+
+  .attire-section {
+    padding-top: 60px;
+  }
+
+  .location-section {
+    min-height: auto;
+    padding: 60px 20px;
+  }
+
+  .soundtrack-section {
+    padding-top: 60px;
+  }
+
+  .gallery-section {
+    padding-bottom: 60px;
+  }
+
+  .rsvp-section {
+    padding: 60px 20px;
+  }
+
+  .story-section {
+    padding: 60px 20px;
+  }
+
+  .details-section {
+    min-height: auto;
+    padding: 60px 20px;
+  }
+
+  .closing-section {
+    min-height: auto;
+    padding: 60px 20px 40px;
   }
 }
 
