@@ -13,6 +13,12 @@ import {
   MapPin,
   Navigation,
   Shirt,
+  Users,
+  Camera,
+  StickyNote,
+  Play,
+  SkipForward,
+  SkipBack,
 } from "lucide-react";
 import { HiOutlineSparkles } from "react-icons/hi2";
 import { tsParticles } from "@tsparticles/engine";
@@ -93,11 +99,215 @@ const attireGuidelines = [
   },
 ];
 
-const scheduleItems = [
-  ["08:30", "Guest arrival", "Please arrive early to settle in before the ceremony."],
-  ["09:00", "Ceremony begins", "Witness the exchange of vows and rings."],
-  ["11:00", "Ceremony reception", "A light celebration with family and friends."],
-  ["18:00", "Evening reception", "Dinner, toasts, and a joyful celebration together."],
+type CeremonySubItem = {
+  label: string;
+  name?: string;
+  time?: string;
+};
+
+type CeremonyPhase = {
+  number: string;
+  title: string;
+  time?: string;
+  approx?: boolean;
+  song?: string;
+  notes?: string[];
+  subitems?: CeremonySubItem[];
+};
+
+const ceremonyFlow: CeremonyPhase[] = [
+  {
+    number: "01",
+    title: "Prelude",
+    time: "2:00 – 2:05 PM",
+    song: "Firm Foundation (Instrumental) — c/o Lights & Sound",
+    notes: [
+      "Soft background music as guests arrive and are seated.",
+      "Ushers guide guests to their seats.",
+      "Floor Coordinator is responsible for crowd control.",
+    ],
+  },
+  {
+    number: "02",
+    title: "Processional",
+    time: "2:10 – 3:10 PM",
+    song: "1st Song — Alabaster Jar & Been So Good (Piano with Singer)",
+    notes: ["Entrance of the entourage (parents, sponsors, bridesmaids, groomsmen), followed by the entrance of the bride."],
+    subitems: [
+      { label: "Pastor", name: "Pr. Manny Manuel", time: "2:10 – 2:15" },
+      { label: "Principal Sponsors", name: "Enter by partner", time: "2:15 – 2:20" },
+      { label: "Groom with Parents", name: "Renato Rosal & Marichu Rosal", time: "2:20 – 2:25" },
+      { label: "Candle Sponsors", name: "Adrin Tipones & Ilona Jean Rosal", time: "2:25 – 2:30" },
+      { label: "Veil Sponsors", name: "Pres Joel Manuel & Rica Jaine Rosal (Remover: Cyrus Palomar & Rose Jane Atibagos)", time: "2:30 – 2:35" },
+      { label: "Cord Sponsors", name: "Elijah Hernandez & Angela Diaz (Remover: Atty. Jorenz Obiedo & Donisa Diaz)", time: "2:35 – 2:40" },
+      { label: "Maid of Honor & Best Man", name: "James Hernandez & Jennifer Diaz · Ptr. Justine Rosal & Mhariz Diaz", time: "2:40 – 2:45" },
+      { label: "Ring Bearer", name: "Azarayah Baisa", time: "2:45 – 2:50" },
+      { label: "Bible Bearer", name: "Abdiel John Lael Diaz", time: "2:50 – 2:55" },
+      { label: "Coin Bearer", name: "Lance Leo Mendoza", time: "2:55 – 3:00" },
+      { label: "Flower Girls", name: "Nathalia Jaine Rosal, Princess Ryzza Rosal, Zia Jean Grace, Faith Diaz", time: "3:00 – 3:05" },
+      { label: "The Bride", name: "With parents Damaso Diaz & Susan Diaz", time: "3:05 – 3:10" },
+    ],
+  },
+  {
+    number: "02b",
+    title: "The Bride's Entrance",
+    time: "3:05 – 3:10 PM",
+    song: "2nd Song — What A Beautiful Name It Is (Chorus, piano instrumental)",
+  },
+  {
+    number: "03",
+    title: "Crowd Worship",
+    time: "≈ 2–3 mins",
+    song: "3rd Song — Lilim (1st chorus–bridge)",
+  },
+  {
+    number: "04",
+    title: "Opening Words from the Officiating Minister",
+    approx: true,
+    time: "3:10 – 3:15 PM",
+  },
+  {
+    number: "05",
+    title: "Candle Sponsors — Lighting the Candles",
+    time: "3:15 – 3:20 PM",
+    song: "4th Song — Reckless Love (Chorus & Bridge, piano)",
+    subitems: [{ label: "Candle Sponsors", name: "Adrin Tipones & Ilona Jean Rosal" }],
+  },
+  {
+    number: "06",
+    title: "Opening Prayer",
+    time: "3:20 – 3:25 PM",
+    song: "5th Song — Jesus at the Center (Piano Instrumental, plays through this segment)",
+    notes: ["Ptra. Corazon Manuel"],
+  },
+  {
+    number: "07",
+    title: "Parents — Blessing and Pledge of Support",
+    time: "3:25 – 3:30 PM",
+  },
+  {
+    number: "08",
+    title: "Reading & Short Exhortation of the Minister",
+    time: "3:30 – 3:35 PM",
+  },
+  {
+    number: "09",
+    title: "Declaration of Intentions — \"I Do\"",
+    time: "3:35 – 3:40 PM",
+  },
+  {
+    number: "10",
+    title: "Presentation of Rings, Coin & Bible",
+    time: "3:40 – 3:45 PM",
+    subitems: [
+      { label: "Rings", name: "Azarayah Baisa" },
+      { label: "Coin", name: "Lance Leo Mendoza" },
+      { label: "Bible", name: "Abdiel John Lael Diaz" },
+    ],
+  },
+  {
+    number: "11",
+    title: "Exchange of Rings and Giving of Vows",
+    time: "3:45 – 3:50 PM",
+  },
+  {
+    number: "12",
+    title: "Giving of the Arrhae / Aras",
+    time: "3:50 – 3:55 PM",
+  },
+  {
+    number: "13",
+    title: "Giving of the Bible",
+    time: "3:55 – 4:00 PM",
+    notes: ["Minister will give a short exhortation; the veil and cord ceremony follow right after."],
+  },
+  {
+    number: "14",
+    title: "Pinning of the Veil",
+    time: "4:05 – 4:10 PM",
+    song: "6th Song — Build My Life (Piano with Singer)",
+    subitems: [{ label: "Veil Sponsors", name: "Pres Joel Manuel & Rica Jaine Rosal" }],
+  },
+  {
+    number: "15",
+    title: "Placing of the Cord",
+    time: "4:10 – 4:15 PM",
+    subitems: [{ label: "Cord Sponsors", name: "Elijah Hernandez & Angela Diaz" }],
+  },
+  {
+    number: "16",
+    title: "Signing of the Certificate",
+    approx: true,
+    time: "4:15 – 4:25 PM",
+  },
+  {
+    number: "17",
+    title: "Prayer of Blessing to the Couple",
+    time: "4:25 – 4:30 PM",
+  },
+  {
+    number: "18",
+    title: "Removal of the Cord and Veil",
+    time: "4:30 – 4:35 PM",
+    song: "7th Song — More Than Able (Piano Instrumental)",
+    notes: ["Cord sponsor removes first, then the veil sponsor."],
+    subitems: [
+      { label: "Cord Remover", name: "Atty. Jorenz Obiedo & Donisa Diaz" },
+      { label: "Veil Remover", name: "Cyrus Palomar & Rose Jane Atibagos" },
+    ],
+  },
+  {
+    number: "19",
+    title: "Lighting of the Unity Candle",
+    time: "4:35 – 4:40 PM",
+    song: "8th Song — I Trust in God (Piano Instrumental)",
+    notes: ["The couple lights the center candle using their individual candles."],
+  },
+  {
+    number: "20",
+    title: "Marriage Blessing & Thanks to Parents",
+    time: "4:40 – 4:45 PM",
+  },
+  {
+    number: "21",
+    title: "Pronouncement of Marriage & Kiss the Bride",
+    time: "4:45 – 4:50 PM",
+  },
+  {
+    number: "22",
+    title: "Presentation of the Newlywed",
+    time: "4:50 – 4:55 PM",
+    song: "9th Song — Mula sa Aking Puso (c/o Lights & Sound)",
+    notes: ["The chorus starts, then continues to play right after the kiss."],
+  },
+  {
+    number: "23",
+    title: "Recessional",
+    time: "4:55 – 5:00 PM",
+    song: "10th Song — TBD",
+  },
+  {
+    number: "24",
+    title: "Pictorial",
+    time: "Following the ceremony",
+    subitems: [
+      { label: "1", name: "Bride and Groom with Pastor" },
+      { label: "2", name: "Bride and Groom with Pastor and the Pastor's Wife" },
+      { label: "3", name: "Bride and Groom with Principal Sponsors" },
+      { label: "4", name: "Bride and Groom with Secondary Sponsors" },
+      { label: "5", name: "Bride and Groom with the Best Men" },
+      { label: "6", name: "Bride and Groom with the Matron of Honour" },
+      { label: "7", name: "Bride and Groom with the Matron of Honour, Best Men & All Secondary Sponsors" },
+      { label: "8", name: "Bride and Groom with both Parents" },
+      { label: "9", name: "Bride and Groom with Bride's Parents only" },
+      { label: "10", name: "Bride and Groom with Bride's Immediate Family" },
+      { label: "11", name: "Bride and Groom with Bride's Immediate Family and Relatives" },
+      { label: "12", name: "Bride and Groom with Groom's Parents only" },
+      { label: "13", name: "Bride and Groom with Groom's Immediate Family" },
+      { label: "14", name: "Bride and Groom with Groom's Immediate Family and Relatives" },
+      { label: "15", name: "Bride and Groom with all friends" },
+    ],
+  },
 ];
 
 const entranceParticles = [
@@ -194,6 +404,35 @@ function CoutureCrest({ className = "" }: { className?: string }) {
       <span>G</span>
       <em>&amp;</em>
       <span>B</span>
+    </div>
+  );
+}
+
+function CountdownLocket({ value, label, index }: { value: string; label: string; index: number }) {
+  const reduceMotion = useReducedMotion();
+  return (
+    <div className="countdown-locket" style={{ animationDelay: `${index * 0.45}s` }}>
+      <svg className="countdown-locket__ring" viewBox="0 0 100 100" aria-hidden="true">
+        <circle className="countdown-locket__ring-outer" cx="50" cy="50" r="46.5" />
+        <circle className="countdown-locket__ring-inner" cx="50" cy="50" r="39" />
+      </svg>
+      <div className="countdown-locket__face">
+        <span className="countdown-locket__digits">
+          <AnimatePresence mode="popLayout" initial={false}>
+            <motion.span
+              key={value}
+              className="countdown-locket__digit"
+              initial={reduceMotion ? false : { y: 14, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={reduceMotion ? undefined : { y: -14, opacity: 0 }}
+              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            >
+              {value}
+            </motion.span>
+          </AnimatePresence>
+        </span>
+        <span className="countdown-locket__label">{label}</span>
+      </div>
     </div>
   );
 }
@@ -414,6 +653,94 @@ function Reveal({ children, delay = 0, className = "" }: { children: React.React
   );
 }
 
+function CeremonyTimelinePhase({
+  phase,
+  index,
+  isOpen,
+  onToggle,
+}: {
+  phase: CeremonyPhase;
+  index: number;
+  isOpen: boolean;
+  onToggle: () => void;
+}) {
+  const hasDetails = Boolean(phase.notes?.length || phase.subitems?.length);
+  const isPictorial = phase.number === "24";
+
+  return (
+    <Reveal delay={Math.min(index * 0.035, 0.5)} className="scroll-reveal">
+      <article className={`timeline-item ${isOpen ? "is-open" : ""}`}>
+        <button
+          type="button"
+          className="timeline-item__head"
+          onClick={hasDetails ? onToggle : undefined}
+          aria-expanded={hasDetails ? isOpen : undefined}
+          disabled={!hasDetails}
+        >
+          <span className="timeline-item__number">{phase.number.replace("b", "")}</span>
+          <span className="timeline-item__heading">
+            <h3>{phase.title}</h3>
+            <span className="timeline-item__meta">
+              {phase.time && (
+                <span className="timeline-item__time">
+                  <Clock3 size={12} /> {phase.approx ? "≈ " : ""}
+                  {phase.time}
+                </span>
+              )}
+              {phase.song && (
+                <span className="timeline-item__song">
+                  <Music2 size={12} /> {phase.song}
+                </span>
+              )}
+            </span>
+          </span>
+          {hasDetails && (
+            <span className="timeline-item__chevron">
+              <ChevronDown size={16} />
+            </span>
+          )}
+        </button>
+
+        <AnimatePresence initial={false}>
+          {hasDetails && isOpen && (
+            <motion.div
+              className="timeline-item__body"
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.35, ease: [0.23, 1, 0.32, 1] }}
+            >
+              <div className="timeline-item__body-inner">
+                {phase.notes?.map((note, noteIndex) => (
+                  <p className="timeline-item__note" key={noteIndex}>
+                    <StickyNote size={12} /> {note}
+                  </p>
+                ))}
+                {phase.subitems && (
+                  <ol className="timeline-sublist">
+                    {phase.subitems.map((item, itemIndex) => (
+                      <li className="timeline-subitem" key={itemIndex}>
+                        <span className="timeline-subitem__icon" aria-hidden="true">
+                          {isPictorial ? <Camera size={12} /> : <Users size={12} />}
+                        </span>
+                        <span className="timeline-subitem__text">
+                          <strong>{item.label}</strong>
+                          {item.name && <span> — {item.name}</span>}
+                        </span>
+                        {item.time && <span className="timeline-subitem__time">{item.time}</span>}
+                      </li>
+                    ))}
+                  </ol>
+                )}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </article>
+    </Reveal>
+  );
+}
+
 /**
  * ZoomEntranceOverlay
  * One-shot GSAP cinematic entrance: cover photo zooms toward the viewer,
@@ -477,10 +804,24 @@ export default function Home() {
   const [opened, setOpened] = useState(false);
   const [opening, setOpening] = useState(false);
   const [musicOn, setMusicOn] = useState(false);
+  const [openPhases, setOpenPhases] = useState<Set<string>>(() => new Set(["02"]));
+  const [currentSongIndex, setCurrentSongIndex] = useState(0);
+  const [progress, setProgress] = useState(0);
   const lenisRef = useRef<Lenis | null>(null);
   const musicRef = useRef<HTMLAudioElement | null>(null);
   const countdown = useCountdown();
   const reduceMotion = useReducedMotion();
+
+  const playlist = [
+    { title: "A Thousand Years", artist: "Christina Perri", duration: "4:45" },
+    { title: "Perfect", artist: "Ed Sheeran", duration: "4:23" },
+    { title: "All of Me", artist: "John Legend", duration: "4:29" },
+    { title: "Thinking Out Loud", artist: "Ed Sheeran", duration: "4:41" },
+    { title: "Beautiful in White", artist: "Shane Filan", duration: "4:05" },
+    { title: "Marry You", artist: "Bruno Mars", duration: "3:49" },
+    { title: "Just the Way You Are", artist: "Bruno Mars", duration: "3:58" },
+    { title: "Make You Feel My Love", artist: "Adele", duration: "3:32" },
+  ];
 
   const calendarLink = useMemo(() => {
     const params = new URLSearchParams({
@@ -734,6 +1075,53 @@ export default function Home() {
     }
     audio.pause();
     setMusicOn(false);
+  };
+
+  const playNextSong = () => {
+    setCurrentSongIndex((prev) => (prev + 1) % playlist.length);
+  };
+
+  const playPreviousSong = () => {
+    setCurrentSongIndex((prev) => (prev - 1 + playlist.length) % playlist.length);
+  };
+
+  const selectSong = (index: number) => {
+    setCurrentSongIndex(index);
+    if (!musicOn) {
+      void startBackgroundMusic();
+    }
+  };
+
+  // Update progress bar
+  useEffect(() => {
+    const audio = musicRef.current;
+    if (!audio || !musicOn) return;
+
+    const updateProgress = () => {
+      if (audio.duration) {
+        setProgress((audio.currentTime / audio.duration) * 100);
+      }
+    };
+
+    const interval = setInterval(updateProgress, 100);
+    return () => clearInterval(interval);
+  }, [musicOn]);
+
+  const toggleTimelinePhase = (number: string) => {
+    setOpenPhases((current) => {
+      const next = new Set(current);
+      if (next.has(number)) {
+        next.delete(number);
+      } else {
+        next.add(number);
+      }
+      return next;
+    });
+  };
+
+  const allTimelineOpen = openPhases.size === ceremonyFlow.length;
+  const toggleAllTimelinePhases = () => {
+    setOpenPhases(allTimelineOpen ? new Set() : new Set(ceremonyFlow.map((phase) => phase.number)));
   };
 
   const openInvitation = () => {
@@ -1138,32 +1526,95 @@ export default function Home() {
             <SectionHeading eyebrow="A song for our day">Our Soundtrack</SectionHeading>
           </Reveal>
           <Reveal className="soundtrack-card scroll-reveal">
-            <span className="soundtrack-card__disc"><Disc3 size={23} /></span>
+            <span className={`soundtrack-card__disc ${musicOn ? 'soundtrack-card__disc--playing' : 'soundtrack-card__disc--paused'}`}>
+              <Disc3 size={64} className="soundtrack-disc-icon" />
+            </span>
             <p className="eyebrow">Now playing</p>
-            <h3>Our Song Title</h3>
-            <p className="soundtrack-artist">Artist Name</p>
-            <button type="button" className="soundtrack-button" onClick={toggleBackgroundMusic}>
-              <Music2 size={15} /> {musicOn ? "Pause ambience" : "Play ambience"}
-            </button>
+            <h3>{playlist[currentSongIndex].title}</h3>
+            <p className="soundtrack-artist">{playlist[currentSongIndex].artist}</p>
+
+            <div className="soundtrack-progress">
+              <div className="soundtrack-progress-bar">
+                <div className="soundtrack-progress-bar__fill" style={{ width: `${progress}%` }} />
+              </div>
+              <div className="soundtrack-progress__time">
+                <span>0:00</span>
+                <span>{playlist[currentSongIndex].duration}</span>
+              </div>
+            </div>
+
+            <div className="soundtrack-controls">
+              <button
+                type="button"
+                className="soundtrack-control-button"
+                onClick={playPreviousSong}
+                aria-label="Previous song"
+              >
+                <SkipBack size={18} />
+              </button>
+              <button
+                type="button"
+                className="soundtrack-control-button soundtrack-control-button--main"
+                onClick={toggleBackgroundMusic}
+                aria-label={musicOn ? "Pause music" : "Play music"}
+              >
+                {musicOn ? <Pause size={24} fill="currentColor" /> : <Play size={24} fill="currentColor" />}
+              </button>
+              <button
+                type="button"
+                className="soundtrack-control-button"
+                onClick={playNextSong}
+                aria-label="Next song"
+              >
+                <SkipForward size={18} />
+              </button>
+            </div>
+
+            <ul className="soundtrack-playlist">
+              {playlist.map((song, index) => (
+                <li
+                  key={index}
+                  className={`soundtrack-playlist-item ${index === currentSongIndex ? 'soundtrack-playlist-item--active' : ''}`}
+                  onClick={() => selectSong(index)}
+                >
+                  <span className="soundtrack-playlist-item__icon">
+                    {index === currentSongIndex && musicOn ? <Pause size={14} fill="currentColor" /> : <Play size={14} fill="currentColor" />}
+                  </span>
+                  <div className="soundtrack-playlist-item__info">
+                    <h4 className="soundtrack-playlist-item__title">{song.title}</h4>
+                    <p className="soundtrack-playlist-item__artist">{song.artist}</p>
+                  </div>
+                  <span className="soundtrack-playlist-item__duration">{song.duration}</span>
+                </li>
+              ))}
+            </ul>
           </Reveal>
         </section>
 
         <section className="timeline-section parchment-section">
+          <img className="timeline-engraving" src={ornament.engraving} alt="" />
+          <span className="paper-orbit paper-orbit--timeline" aria-hidden="true" />
+          <img className="timeline-decoration timeline-decoration--top-left" src={ornament.corner} alt="" aria-hidden="true" />
+          <img className="timeline-decoration timeline-decoration--bottom-right" src={ornament.lower} alt="" aria-hidden="true" />
+          <span className="timeline-sparkle timeline-sparkle--one" aria-hidden="true">✦</span>
+          <span className="timeline-sparkle timeline-sparkle--two" aria-hidden="true">✦</span>
+          <span className="timeline-sparkle timeline-sparkle--three" aria-hidden="true">✦</span>
           <Reveal className="scroll-reveal">
-            <SectionHeading eyebrow="Celebrate with us">Timeline</SectionHeading>
-            <p className="intro-copy">A gentle guide to the moments we will share together.</p>
+            <SectionHeading eyebrow="Celebrate with us">Wedding Ceremony Flow</SectionHeading>
+            <p className="intro-copy">A gentle, complete guide to every moment we will share together — tap a step for the full details.</p>
           </Reveal>
+          <button type="button" className="timeline-toggle-all scroll-reveal" onClick={toggleAllTimelinePhases}>
+            {allTimelineOpen ? "Collapse all" : "Expand all"}
+          </button>
           <div className="timeline-list">
-            {scheduleItems.map(([time, title, copy], index) => (
-              <Reveal key={time} delay={index * 0.08} className="scroll-reveal">
-                <article className="timeline-item">
-                  <span className="timeline-item__time"><Clock3 size={14} /> {time}</span>
-                  <div>
-                    <h3>{title}</h3>
-                    <p>{copy}</p>
-                  </div>
-                </article>
-              </Reveal>
+            {ceremonyFlow.map((phase, index) => (
+              <CeremonyTimelinePhase
+                key={phase.number}
+                phase={phase}
+                index={index}
+                isOpen={openPhases.has(phase.number)}
+                onToggle={() => toggleTimelinePhase(phase.number)}
+              />
             ))}
           </div>
         </section>
@@ -1175,18 +1626,23 @@ export default function Home() {
           <Reveal className="closing-content scroll-reveal">
             <CoutureCrest className="couture-crest--closing" />
             <p className="eyebrow">Counting the days</p>
-            <div className="countdown-grid" aria-label="Countdown to wedding day">
-              {[
-                [countdown.days, "Days"],
-                [countdown.hours, "Hours"],
-                [countdown.minutes, "Minutes"],
-                [countdown.seconds, "Seconds"],
-              ].map(([value, label]) => (
-                <div key={label} className="scroll-reveal">
-                  <strong>{value}</strong>
-                  <span>{label}</span>
-                </div>
-              ))}
+            <div className="countdown-cluster" aria-label="Countdown to wedding day">
+              <svg className="countdown-cluster__vine" viewBox="0 0 400 60" preserveAspectRatio="none" aria-hidden="true">
+                <path d="M24,30 Q100,6 200,30 T376,30" />
+                <circle className="countdown-cluster__vine-mark" cx="120" cy="15" r="2.4" />
+                <circle className="countdown-cluster__vine-mark" cx="200" cy="30" r="2.4" />
+                <circle className="countdown-cluster__vine-mark" cx="280" cy="15" r="2.4" />
+              </svg>
+              <div className="countdown-cluster__row">
+                {[
+                  [countdown.days, "Days"],
+                  [countdown.hours, "Hours"],
+                  [countdown.minutes, "Minutes"],
+                  [countdown.seconds, "Seconds"],
+                ].map(([value, label], index) => (
+                  <CountdownLocket key={label} value={value} label={label} index={index} />
+                ))}
+              </div>
             </div>
             <a href={calendarLink} target="_blank" rel="noreferrer" className="save-date-button scroll-reveal">
               <CalendarDays size={16} /> Save The Date

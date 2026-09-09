@@ -149,10 +149,13 @@ a {
 .invitation-content>section>.event-engraving,
 .invitation-content>section>.attire-engraving,
 .invitation-content>section>.soundtrack-engraving,
+.invitation-content>section>.timeline-engraving,
 .invitation-content>section>.story-corner-spray,
 .invitation-content>section>.gallery-sparkle,
 .invitation-content>section>.closing-star,
-.invitation-content>section>.paper-orbit {
+.invitation-content>section>.paper-orbit,
+.invitation-content>section>.timeline-decoration,
+.invitation-content>section>.timeline-sparkle {
   translate: 0 var(--parallax-far-y);
 }
 
@@ -3420,7 +3423,8 @@ a {
 }
 
 .attire-engraving,
-.soundtrack-engraving {
+.soundtrack-engraving,
+.timeline-engraving {
   position: relative;
   z-index: 1;
   display: block;
@@ -3703,16 +3707,21 @@ a {
   margin-top: 41px;
   padding: 38px 26px 34px;
   border: 1px solid rgb(94 127 159 / .42);
-  background: linear-gradient(145deg, rgb(252 254 255 / .88), rgb(220 238 248 / .63));
+  border-radius: 24px;
+  background: linear-gradient(145deg, rgb(252 254 255 / .18), rgb(220 238 248 / .12));
   box-shadow: 0 18px 30px rgb(48 86 120 / .1);
   text-align: center;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .soundtrack-section--fountain .soundtrack-card {
   position: relative;
   z-index: 1;
   border-color: rgb(94 127 159 / .5);
-  background: linear-gradient(145deg, rgb(253 255 255 / .8), rgb(222 240 248 / .68));
+  border-radius: 24px;
+  background: linear-gradient(145deg, rgb(253 255 255 / .18), rgb(222 240 248 / .12));
   box-shadow: 0 18px 32px rgb(48 86 120 / .11);
   backdrop-filter: blur(2px);
 }
@@ -3720,22 +3729,73 @@ a {
 .soundtrack-card__disc {
   display: grid;
   place-items: center;
-  width: 54px;
-  height: 54px;
-  margin: 0 auto 19px;
-  border: 1px solid var(--rosewood);
+  width: 220px;
+  height: 220px;
+  margin: 0 auto 24px;
   border-radius: 999px;
+  background: linear-gradient(145deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  box-shadow:
+    0 8px 24px rgb(0 0 0 / .4),
+    0 0 40px rgb(220 180 140 / .3),
+    inset 0 2px 4px rgb(255 255 255 / .15),
+    inset 0 -2px 4px rgb(0 0 0 / .3);
+  position: relative;
   color: var(--rosewood);
-  animation: disc-spin 12s linear infinite;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.soundtrack-card__disc::before {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  border-radius: 999px;
+  background: repeating-radial-gradient(circle at center,
+      transparent 0px,
+      transparent 2px,
+      rgb(255 255 255 / .03) 2px,
+      rgb(255 255 255 / .03) 4px);
+}
+
+.soundtrack-card__disc::after {
+  content: "";
+  position: absolute;
+  inset: 60px;
+  border-radius: 999px;
+  background: linear-gradient(145deg, #e8d5b7, #d4b896);
+  box-shadow:
+    0 2px 4px rgb(0 0 0 / .2),
+    inset 0 1px 2px rgb(255 255 255 / .5);
+}
+
+.soundtrack-card__disc--playing {
+  animation: disc-spin 3s linear infinite;
+  box-shadow:
+    0 8px 24px rgb(0 0 0 / .4),
+    0 0 60px rgb(220 180 140 / .5),
+    0 0 100px rgb(220 180 140 / .2),
+    inset 0 2px 4px rgb(255 255 255 / .15),
+    inset 0 -2px 4px rgb(0 0 0 / .3);
+}
+
+.soundtrack-card__disc--paused {
+  animation-play-state: paused;
+}
+
+.soundtrack-card__disc svg {
+  position: relative;
+  z-index: 1;
+  color: #e8d5b7;
+  filter: drop-shadow(0 2px 4px rgb(0 0 0 / .3));
 }
 
 .soundtrack-card h3 {
   margin: 0;
   color: var(--wine);
   font-family: "Cormorant Garamond", Georgia, serif;
-  font-size: 34px;
+  font-size: 28px;
   font-weight: 500;
-  line-height: .96;
+  line-height: 1.1;
+  letter-spacing: -0.5px;
 }
 
 .soundtrack-artist {
@@ -3773,62 +3833,279 @@ a {
   padding-bottom: 88px;
 }
 
+.timeline-engraving {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 140px;
+  margin: 0 auto 18px;
+}
+
+.paper-orbit--timeline {
+  position: absolute;
+  top: 15%;
+  right: 8%;
+  width: 80px;
+  height: 80px;
+  border-radius: 999px;
+  background: radial-gradient(circle, rgb(250 254 255 / .15), transparent 70%);
+  animation: orbit 20s linear infinite;
+}
+
+.timeline-decoration {
+  position: absolute;
+  pointer-events: none;
+  opacity: .3;
+  filter: blur(1px);
+}
+
+.timeline-decoration--top-left {
+  top: 8%;
+  left: 3%;
+  width: 70px;
+  height: 70px;
+  transform: rotate(-15deg);
+}
+
+.timeline-decoration--bottom-right {
+  bottom: 10%;
+  right: 4%;
+  width: 60px;
+  height: 60px;
+  transform: rotate(25deg);
+}
+
+.timeline-sparkle {
+  position: absolute;
+  color: var(--rosewood);
+  font-size: 16px;
+  opacity: .5;
+  animation: sparkle 3s ease-in-out infinite;
+}
+
+.timeline-sparkle--one {
+  top: 20%;
+  left: 15%;
+  animation-delay: 0s;
+}
+
+.timeline-sparkle--two {
+  top: 60%;
+  right: 20%;
+  animation-delay: 1s;
+}
+
+.timeline-sparkle--three {
+  bottom: 25%;
+  left: 25%;
+  animation-delay: 2s;
+}
+
+@keyframes sparkle {
+
+  0%,
+  100% {
+    opacity: .3;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: .8;
+    transform: scale(1.2);
+  }
+}
+
+.timeline-toggle-all {
+  display: block;
+  margin: 18px auto 0;
+  padding: 9px 20px;
+  border: 1px solid rgb(94 127 159 / .45);
+  border-radius: 999px;
+  background: rgb(252 254 255 / .8);
+  color: var(--wine);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 160ms ease, color 160ms ease, transform 160ms ease;
+}
+
+.timeline-toggle-all:hover {
+  background: var(--rosewood);
+  color: #f9fdff;
+  transform: translateY(-2px);
+}
+
 .timeline-list {
   display: grid;
-  gap: 0;
-  margin: 43px auto 0;
+  gap: 14px;
+  max-width: 640px;
+  margin: 34px auto 0;
 }
 
 .timeline-item {
   position: relative;
-  display: grid;
-  grid-template-columns: 79px 1fr;
-  gap: 17px;
-  padding: 0 0 27px;
+  border: 1px solid rgb(94 127 159 / .3);
+  background: rgb(252 254 255 / .78);
+  overflow: hidden;
+  transition: border-color 220ms ease, box-shadow 220ms ease;
 }
 
-.timeline-item:not(:last-child)::before {
-  position: absolute;
-  top: 31px;
-  bottom: 3px;
-  left: 39px;
-  width: 1px;
-  content: "";
-  background: linear-gradient(var(--rosewood), transparent);
-  opacity: .44;
+.timeline-item.is-open {
+  border-color: rgb(94 127 159 / .6);
+  box-shadow: 0 14px 28px -20px rgb(51 93 127 / .5);
+}
+
+.timeline-item__head {
+  display: grid;
+  grid-template-columns: 46px 1fr 20px;
+  align-items: center;
+  gap: 15px;
+  width: 100%;
+  padding: 15px 17px;
+  border: none;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+}
+
+.timeline-item__head:disabled {
+  cursor: default;
+}
+
+.timeline-item__number {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid rgb(94 127 159 / .45);
+  border-radius: 50%;
+  color: var(--wine);
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: .02em;
+}
+
+.timeline-item__heading {
+  display: grid;
+  gap: 5px;
+  min-width: 0;
+}
+
+.timeline-item__heading h3 {
+  margin: 0;
+  color: var(--wine);
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 19px;
+  font-weight: 600;
+  line-height: 1.15;
+}
+
+.timeline-item__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px 14px;
+}
+
+.timeline-item__time,
+.timeline-item__song {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: #536978;
+  font-size: 11px;
+  letter-spacing: .02em;
 }
 
 .timeline-item__time {
-  position: relative;
-  z-index: 1;
+  color: var(--rosewood);
+  font-weight: 700;
+}
+
+.timeline-item__song {
+  font-style: italic;
+}
+
+.timeline-item__chevron {
   display: grid;
   place-items: center;
-  align-content: center;
-  gap: 3px;
-  width: 79px;
-  height: 55px;
-  border: 1px solid rgb(94 127 159 / .45);
-  background: rgb(252 254 255 / .8);
-  color: var(--wine);
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: .05em;
+  color: var(--rosewood);
+  transition: transform 220ms ease;
 }
 
-.timeline-item h3 {
-  margin: 3px 0 0;
-  color: var(--wine);
-  font-family: "Cormorant Garamond", Georgia, serif;
-  font-size: 26px;
-  font-weight: 500;
-  line-height: .95;
+.timeline-item.is-open .timeline-item__chevron {
+  transform: rotate(180deg);
 }
 
-.timeline-item p {
-  margin: 9px 0 0;
+.timeline-item__body {
+  overflow: hidden;
+}
+
+.timeline-item__body-inner {
+  padding: 2px 17px 19px 76px;
+  display: grid;
+  gap: 10px;
+}
+
+.timeline-item__note {
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+  margin: 0;
   color: #536978;
   font-size: 12px;
-  line-height: 1.6;
+  line-height: 1.55;
+}
+
+.timeline-item__note svg {
+  flex: none;
+  margin-top: 3px;
+  color: var(--rosewood);
+}
+
+.timeline-sublist {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 11px 0 0;
+  border-top: 1px dashed rgb(94 127 159 / .35);
+  list-style: none;
+}
+
+.timeline-subitem {
+  display: grid;
+  grid-template-columns: 18px 1fr auto;
+  align-items: start;
+  gap: 8px;
+}
+
+.timeline-subitem__icon {
+  display: grid;
+  place-items: center;
+  margin-top: 2px;
+  color: var(--rosewood);
+}
+
+.timeline-subitem__text {
+  color: #435866;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.timeline-subitem__text strong {
+  color: var(--wine);
+  font-weight: 700;
+}
+
+.timeline-subitem__time {
+  color: var(--rosewood);
+  font-size: 10.5px;
+  font-weight: 700;
+  white-space: nowrap;
 }
 
 .gallery-section {
@@ -4241,36 +4518,136 @@ a {
   margin: 0 auto 25px;
 }
 
-.countdown-grid {
+.countdown-cluster {
+  position: relative;
+  margin: 30px 0 32px;
+}
+
+.countdown-cluster__vine {
+  position: absolute;
+  top: 34px;
+  left: 4%;
+  width: 92%;
+  height: 34px;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.countdown-cluster__vine path {
+  fill: none;
+  stroke: rgb(94 127 159 / .4);
+  stroke-width: 1;
+  stroke-dasharray: 2 4;
+}
+
+.countdown-cluster__vine-mark {
+  fill: rgb(94 127 159 / .55);
+}
+
+.countdown-cluster__row {
+  position: relative;
+  z-index: 1;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 6px;
-  margin: 27px 0 29px;
+  gap: 4px;
 }
 
-.countdown-grid>div {
-  padding: 13px 3px 12px;
-  border: 1px solid rgb(94 127 159 / .47);
-  background: rgb(251 254 255 / .6);
+.countdown-locket {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  max-width: 80px;
+  margin: 0 auto;
+  animation: locket-reveal .8s cubic-bezier(.23, 1, .32, 1) both,
+    locket-glow 4.2s ease-in-out infinite;
 }
 
-.countdown-grid strong {
+.countdown-locket__ring {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.countdown-locket__ring-outer {
+  fill: rgb(251 254 255 / .82);
+  stroke: rgb(94 127 159 / .55);
+  stroke-width: 1.4;
+}
+
+.countdown-locket__ring-inner {
+  fill: none;
+  stroke: rgb(51 93 127 / .4);
+  stroke-width: .6;
+  stroke-dasharray: 1.6 2.4;
+}
+
+.countdown-locket__face {
+  position: absolute;
+  inset: 12%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: radial-gradient(circle at 34% 28%, rgb(255 255 255 / .95), rgb(214 229 239 / .55) 70%, rgb(126 157 171 / .3));
+  overflow: hidden;
+}
+
+.countdown-locket__digits {
+  position: relative;
+  display: block;
+  height: 26px;
+  overflow: hidden;
+}
+
+.countdown-locket__digit {
   display: block;
   color: var(--wine);
   font-family: "Cormorant Garamond", Georgia, serif;
-  font-size: 29px;
+  font-size: 26px;
   font-weight: 600;
-  line-height: .9;
+  line-height: 1;
 }
 
-.countdown-grid span {
+.countdown-locket__label {
   display: block;
-  margin-top: 7px;
-  color: var(--wine);
-  font-size: 8px;
+  margin-top: 3px;
+  color: var(--rosewood);
+  font-size: 6.5px;
   font-weight: 700;
-  letter-spacing: .09em;
+  letter-spacing: .11em;
   text-transform: uppercase;
+}
+
+@keyframes locket-reveal {
+  from {
+    opacity: 0;
+    transform: scale(.6);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes locket-glow {
+
+  0%,
+  100% {
+    filter: drop-shadow(0 0 0 rgb(94 127 159 / 0));
+  }
+
+  50% {
+    filter: drop-shadow(0 0 7px rgb(94 127 159 / .45));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .countdown-locket {
+    animation: none;
+  }
 }
 
 .save-date-button {
@@ -4423,9 +4800,239 @@ footer span {
 }
 
 @keyframes disc-spin {
+  from {
+    transform: rotate(0deg);
+  }
+
   to {
     transform: rotate(360deg);
   }
+}
+
+@keyframes orbit {
+  from {
+    transform: rotate(0deg) translateX(30px) rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg) translateX(30px) rotate(-360deg);
+  }
+}
+
+.soundtrack-playlist {
+  margin-top: 28px;
+  padding: 0;
+  list-style: none;
+  max-height: 180px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.soundtrack-playlist::-webkit-scrollbar {
+  width: 4px;
+}
+
+.soundtrack-playlist::-webkit-scrollbar-track {
+  background: rgb(94 127 159 / .1);
+  border-radius: 2px;
+}
+
+.soundtrack-playlist::-webkit-scrollbar-thumb {
+  background: rgb(94 127 159 / .3);
+  border-radius: 2px;
+}
+
+.soundtrack-playlist::-webkit-scrollbar-thumb:hover {
+  background: rgb(94 127 159 / .5);
+}
+
+.soundtrack-playlist-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  margin-bottom: 8px;
+  border-radius: 12px;
+  background: rgb(252 254 255 / .6);
+  border: 1px solid rgb(94 127 159 / .2);
+  cursor: pointer;
+  transition: all 200ms ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.soundtrack-playlist-item::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 100%;
+  background: var(--rosewood);
+  opacity: 0;
+  transition: opacity 200ms ease;
+}
+
+.soundtrack-playlist-item--active::before {
+  opacity: 1;
+}
+
+.soundtrack-playlist-item:hover {
+  background: rgb(252 254 255 / .9);
+  border-color: rgb(94 127 159 / .4);
+  transform: translateX(4px);
+}
+
+.soundtrack-playlist-item--active {
+  background: linear-gradient(145deg, rgb(220 238 248 / .9), rgb(202 226 238 / .8));
+  border-color: var(--rosewood);
+  box-shadow: 0 4px 16px rgb(48 86 120 / .2);
+  transform: translateX(4px);
+}
+
+.soundtrack-playlist-item__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  background: var(--rosewood);
+  color: #f9fdff;
+  flex-shrink: 0;
+}
+
+.soundtrack-playlist-item--active .soundtrack-playlist-item__icon {
+  background: var(--wine);
+}
+
+.soundtrack-playlist-item__info {
+  flex: 1;
+  min-width: 0;
+}
+
+.soundtrack-playlist-item__title {
+  margin: 0 0 4px;
+  color: var(--wine);
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.soundtrack-playlist-item--active .soundtrack-playlist-item__title {
+  color: var(--rosewood);
+}
+
+.soundtrack-playlist-item__artist {
+  margin: 0;
+  color: #607584;
+  font-size: 11px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.soundtrack-playlist-item__duration {
+  color: #8a9caa;
+  font-size: 11px;
+  font-weight: 500;
+  flex-shrink: 0;
+}
+
+.soundtrack-progress {
+  margin-top: 20px;
+  padding: 0 8px;
+}
+
+.soundtrack-progress-bar {
+  width: 100%;
+  height: 6px;
+  margin-bottom: 8px;
+  border-radius: 999px;
+  background: rgb(94 127 159 / .2);
+  overflow: hidden;
+  cursor: pointer;
+  transition: height 200ms ease;
+}
+
+.soundtrack-progress-bar:hover {
+  height: 8px;
+}
+
+.soundtrack-progress-bar__fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--rosewood), var(--wine));
+  border-radius: 999px;
+  transition: width 100ms linear;
+  position: relative;
+}
+
+.soundtrack-progress-bar__fill::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 12px;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgb(255 255 255 / .3));
+  border-radius: 0 999px 999px 0;
+}
+
+.soundtrack-progress__time {
+  display: flex;
+  justify-content: space-between;
+  color: #607584;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.soundtrack-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.soundtrack-control-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  background: transparent;
+  border: 1px solid rgb(94 127 159 / .3);
+  color: var(--wine);
+  cursor: pointer;
+  transition: all 200ms ease;
+}
+
+.soundtrack-control-button:hover {
+  background: var(--rosewood);
+  border-color: var(--rosewood);
+  color: #f9fdff;
+  transform: scale(1.1);
+}
+
+.soundtrack-control-button--main {
+  width: 56px;
+  height: 56px;
+  background: var(--rosewood);
+  border-color: var(--rosewood);
+  color: #f9fdff;
+  box-shadow: 0 4px 12px rgb(48 86 120 / .2);
+}
+
+.soundtrack-control-button--main:hover {
+  background: var(--wine);
+  border-color: var(--wine);
+  transform: scale(1.05);
 }
 
 @keyframes petal-drift {
@@ -5198,17 +5805,8 @@ footer span {
   transform: translateX(0);
 }
 
-/* Countdown animation */
-.countdown-grid>div.scroll-reveal {
-  opacity: 0;
-  transform: scale(0.5) rotateY(90deg);
-  transition: opacity 0.6s cubic-bezier(0.23, 1, 0.32, 1), transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-}
-
-.countdown-grid>div.scroll-reveal.is-visible {
-  opacity: 1;
-  transform: scale(1) rotateY(0deg);
-}
+/* Countdown medallions animate in on their own via .countdown-locket's
+   locket-reveal keyframe (see rule above), so no scroll-reveal hook is needed here. */
 
 /* Floating elements on scroll */
 .floating-element {
@@ -5421,10 +6019,13 @@ section {
   .invitation-content>section>.event-engraving,
   .invitation-content>section>.attire-engraving,
   .invitation-content>section>.soundtrack-engraving,
+  .invitation-content>section>.timeline-engraving,
   .invitation-content>section>.story-corner-spray,
   .invitation-content>section>.gallery-sparkle,
   .invitation-content>section>.closing-star,
-  .invitation-content>section>.paper-orbit {
+  .invitation-content>section>.paper-orbit,
+  .invitation-content>section>.timeline-decoration,
+  .invitation-content>section>.timeline-sparkle {
     translate: 0 0;
   }
 
@@ -5616,31 +6217,36 @@ section {
     bottom: 6px;
   }
 
-  .countdown-grid {
-    gap: 4px;
+  .countdown-locket {
+    max-width: 68px;
   }
 
-  .countdown-grid>div {
-    padding: 10px 2px 8px;
+  .countdown-locket__digit {
+    font-size: 21px;
   }
 
-  .countdown-grid strong {
-    font-size: 24px;
+  .countdown-locket__label {
+    font-size: 6px;
   }
 
-  .timeline-item {
-    grid-template-columns: 70px 1fr;
-    gap: 12px;
+  .timeline-item__head {
+    grid-template-columns: 38px 1fr 18px;
+    gap: 11px;
+    padding: 13px 13px;
   }
 
-  .timeline-item__time {
-    width: 70px;
-    height: 50px;
-    font-size: 10px;
+  .timeline-item__number {
+    width: 34px;
+    height: 34px;
+    font-size: 13px;
   }
 
-  .timeline-item h3 {
-    font-size: 22px;
+  .timeline-item__heading h3 {
+    font-size: 16.5px;
+  }
+
+  .timeline-item__body-inner {
+    padding-left: 56px;
   }
 }
 
@@ -5951,6 +6557,92 @@ section {
 
   .soundtrack-section {
     padding-top: 60px;
+  }
+
+  .soundtrack-card {
+    padding: 28px 20px 24px;
+    border-radius: 20px;
+  }
+
+  .soundtrack-card__disc {
+    width: 180px;
+    height: 180px;
+  }
+
+  .soundtrack-card__disc::after {
+    inset: 50px;
+  }
+
+  .soundtrack-card__disc svg {
+    width: 52px;
+    height: 52px;
+  }
+
+  .timeline-decoration {
+    opacity: .2;
+  }
+
+  .timeline-decoration--top-left {
+    width: 50px;
+    height: 50px;
+  }
+
+  .timeline-decoration--bottom-right {
+    width: 40px;
+    height: 40px;
+  }
+
+  .timeline-sparkle {
+    font-size: 12px;
+  }
+
+  .timeline-decoration {
+    opacity: .2;
+  }
+
+  .timeline-decoration--top-left {
+    width: 50px;
+    height: 50px;
+  }
+
+  .timeline-decoration--bottom-right {
+    width: 40px;
+    height: 40px;
+  }
+
+  .timeline-sparkle {
+    font-size: 12px;
+  }
+
+  .soundtrack-card__disc--playing {
+    box-shadow:
+      0 6px 16px rgb(0 0 0 / .35),
+      0 0 40px rgb(220 180 140 / .4),
+      0 0 70px rgb(220 180 140 / .15),
+      inset 0 2px 4px rgb(255 255 255 / .15),
+      inset 0 -2px 4px rgb(0 0 0 / .3);
+  }
+
+  .soundtrack-card h3 {
+    font-size: 24px;
+  }
+
+  .soundtrack-playlist-item {
+    padding: 10px 12px;
+  }
+
+  .soundtrack-playlist-item__title {
+    font-size: 14px;
+  }
+
+  .soundtrack-control-button {
+    width: 36px;
+    height: 36px;
+  }
+
+  .soundtrack-control-button--main {
+    width: 48px;
+    height: 48px;
   }
 
   .gallery-section {
