@@ -43,6 +43,8 @@ const asset = {
   couple: resolveAsset("wedding-blank-image-placeholder.png", "wedding-blank-image-placeholder_61c292af.png"),
   closing: resolveAsset("ivona-blue-closing-blooms.jpg", "ivona-blue-closing-blooms_8fff14cc.jpg"),
   logo: resolveAsset("ivona-blue-monogram.png", "ivona-blue-monogram_993937c9.png"),
+  video: resolveAsset("rene-yheng-std.mp4", "rene-yheng-std.mp4"),
+  floralFrame: resolveAsset("floral-framee.png", "floral-framee.png"),
 };
 
 const ornament = {
@@ -53,7 +55,7 @@ const ornament = {
 };
 
 const galleryImages = Array.from(
-  { length: 12 },
+  { length: 13 },
   () => asset.couple,
 );
 
@@ -444,7 +446,7 @@ function ZoomEntranceOverlay({
       tl.fromTo(
         ".zeo__stage",
         { scale: 1 },
-        { scale: 8, duration: 5.4, ease: "power2.inOut" },
+        { scale: 4, duration: 5.4, ease: "power2.inOut" },
         0,
       );
 
@@ -452,7 +454,7 @@ function ZoomEntranceOverlay({
       tl.fromTo(
         ".zeo__burst",
         { opacity: 0, scale: 0.1 },
-        { opacity: 1, scale: 2.8, duration: 3.5, ease: "power2.inOut" },
+        { opacity: 1, scale: 1.5, duration: 3.5, ease: "power2.inOut" },
         1.0,
       );
 
@@ -525,6 +527,40 @@ export default function Home() {
       lenisRef.current = null;
     };
   }, [opened, reduceMotion]);
+
+  useEffect(() => {
+    if (reduceMotion) return;
+
+    // Scroll reveal animations - run immediately when page loads
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0.1
+    };
+
+    const scrollObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+        }
+      });
+    }, observerOptions);
+
+    // Observe all scroll-reveal elements
+    const scrollElements = document.querySelectorAll('.scroll-reveal, .scroll-reveal-left, .scroll-reveal-right, .scroll-reveal-scale, .scroll-reveal-rotate, .scroll-reveal-blur');
+    scrollElements.forEach((el) => scrollObserver.observe(el));
+
+    // Set gallery index for staggered animation
+    const galleryTiles = document.querySelectorAll('.gallery-tile');
+    galleryTiles.forEach((tile, index) => {
+      tile.style.setProperty('--gallery-index', index.toString());
+    });
+
+    return () => {
+      scrollObserver.disconnect();
+      scrollElements.forEach((el) => scrollObserver.unobserve(el));
+    };
+  }, [reduceMotion]);
 
   useEffect(() => {
     if (!opened || reduceMotion) return;
@@ -663,8 +699,10 @@ export default function Home() {
     };
   }, [opened, reduceMotion]);
 
-  useEffect(() => () => {
-    musicRef.current?.pause();
+  useEffect(() => {
+    return () => {
+      musicRef.current?.pause();
+    };
   }, []);
 
   const startBackgroundMusic = async (startAtOpeningOffset = false) => {
@@ -871,7 +909,7 @@ export default function Home() {
         >
           <div className="vow-overlay" />
           <ButterflyConstellation className="butterfly-constellation--vow" />
-          <Reveal className="endless-arch">
+          <Reveal className="endless-arch scroll-reveal-scale">
             <img className="endless-ornament endless-ornament--top" src={ornament.engraving} alt="" />
             <span className="endless-seal"><Sparkles size={15} strokeWidth={1.4} /></span>
             <div className="endless-image-frame">
@@ -895,7 +933,7 @@ export default function Home() {
         >
           <span className="paper-orbit paper-orbit--one" aria-hidden="true" />
           <span className="paper-orbit paper-orbit--two" aria-hidden="true" />
-          <Reveal className="couple-heading-reveal">
+          <Reveal className="couple-heading-reveal scroll-reveal">
             <SectionHeading eyebrow="With grateful hearts">Groom &amp; Bride</SectionHeading>
           </Reveal>
           <div className="couple-card couple-card--groom">
@@ -933,9 +971,36 @@ export default function Home() {
           <div className="film-section__canvas" aria-hidden="true" />
           <div className="film-section__overlay" />
           <span className="film-section__stamp">A memory in bloom</span>
+          <img className="film-section__decoration film-section__decoration--top-left" src={ornament.corner} alt="" aria-hidden="true" />
+          <img className="film-section__decoration film-section__decoration--top-right" src={ornament.corner} alt="" aria-hidden="true" />
+          <img className="film-section__decoration film-section__decoration--bottom-left" src={ornament.lower} alt="" aria-hidden="true" />
+          <img className="film-section__decoration film-section__decoration--bottom-right" src={ornament.lower} alt="" aria-hidden="true" />
+          <img className="film-section__vine film-section__vine--left" src={ornament.vine} alt="" aria-hidden="true" />
+          <img className="film-section__vine film-section__vine--right" src={ornament.vine} alt="" aria-hidden="true" />
+          <span className="film-section__sparkle film-section__sparkle--one" aria-hidden="true">✦</span>
+          <span className="film-section__sparkle film-section__sparkle--two" aria-hidden="true">✦</span>
+          <span className="film-section__sparkle film-section__sparkle--three" aria-hidden="true">✦</span>
+          <span className="film-section__sparkle film-section__sparkle--four" aria-hidden="true">✦</span>
+          <span className="film-section__sparkle film-section__sparkle--five" aria-hidden="true">✦</span>
+          <span className="film-section__sparkle film-section__sparkle--six" aria-hidden="true">✦</span>
+          <span className="film-section__petal film-section__petal--one" aria-hidden="true" />
+          <span className="film-section__petal film-section__petal--two" aria-hidden="true" />
+          <span className="film-section__petal film-section__petal--three" aria-hidden="true" />
+          <ButterflyConstellation className="butterfly-constellation--film" />
           <Reveal className="film-section__content">
             <p className="eyebrow">Our Prelude</p>
             <h2>A garden, a promise,<br />a lifetime.</h2>
+            <div className="film-section__video">
+              <video
+                src={asset.video}
+                controls
+                preload="metadata"
+                poster={asset.cover}
+                aria-label="Prewedding film of Groom and Bride"
+              >
+                Your browser does not support the video tag.
+              </video>
+            </div>
           </Reveal>
         </section>
 
@@ -944,7 +1009,7 @@ export default function Home() {
           style={{ backgroundImage: `linear-gradient(180deg, rgb(244 251 254 / .12), rgb(33 74 96 / .13)), url(${asset.lakeside})` }}
         >
           <img className="event-engraving" src={ornament.engraving} alt="" />
-          <Reveal>
+          <Reveal className="scroll-reveal">
             <SectionHeading eyebrow="Save the date">Wedding Event</SectionHeading>
             <p className="intro-copy">
               By the grace of God, we are pleased to announce our wedding to you, our family, and our friends.
@@ -953,7 +1018,7 @@ export default function Home() {
           </Reveal>
           <div className="event-list">
             {eventDetails.map((event, index) => (
-              <Reveal key={event.title} delay={index * 0.08}>
+              <Reveal key={event.title} delay={index * 0.08} className="scroll-reveal">
                 <article className="event-card">
                   <span className="event-card__seal" aria-hidden="true">✦</span>
                   <span className="event-card__number">0{index + 1}</span>
@@ -978,13 +1043,13 @@ export default function Home() {
           style={{ backgroundImage: `linear-gradient(180deg, rgb(244 251 254 / .1), rgb(41 79 99 / .11)), url(${asset.sundial})` }}
         >
           <img className="attire-engraving" src={ornament.engraving} alt="" />
-          <Reveal>
+          <Reveal className="scroll-reveal">
             <SectionHeading eyebrow="Dress with us">Attire Guidelines</SectionHeading>
             <p className="intro-copy">A touch of blue will make the day feel even more like ours.</p>
           </Reveal>
           <div className="attire-grid">
             {attireGuidelines.map((attire, index) => (
-              <Reveal key={attire.role} delay={index * 0.08}>
+              <Reveal key={attire.role} delay={index * 0.08} className="scroll-reveal">
                 <article className="attire-card">
                   <span className="attire-card__icon"><Shirt size={20} /></span>
                   <p className="eyebrow">{attire.role}</p>
@@ -1004,14 +1069,15 @@ export default function Home() {
         >
           <span className="gallery-sparkle gallery-sparkle--one" aria-hidden="true">✦</span>
           <span className="gallery-sparkle gallery-sparkle--two" aria-hidden="true">✦</span>
-          <Reveal>
+          <Reveal className="scroll-reveal">
             <SectionHeading eyebrow="Fragments of us">Our Gallery</SectionHeading>
           </Reveal>
-          <p className="gallery-note">A collection of little moments, kept close.</p>
+          <p className="gallery-note scroll-reveal">A collection of little moments, kept close.</p>
           <div className="gallery-grid">
             {galleryImages.map((src, index) => (
-              <Reveal key={`gallery-placeholder-${index + 1}`} delay={(index % 3) * 0.06} className={`gallery-tile gallery-tile--${index + 1}`}>
+              <Reveal key={`gallery-placeholder-${index + 1}`} delay={(index % 3) * 0.06} className={`gallery-tile gallery-tile--${index + 1} scroll-reveal`}>
                 <img src={src} alt={`Wedding gallery placeholder ${index + 1}`} />
+                <span className="polaroid-caption">Memory {index + 1}</span>
               </Reveal>
             ))}
           </div>
@@ -1022,9 +1088,9 @@ export default function Home() {
           style={{ backgroundImage: `linear-gradient(180deg, rgb(245 252 254 / .05), rgb(38 79 104 / .1)), url(${asset.gate})` }}
         >
           <div className="location-section__wash" />
-          <Reveal className="location-content">
+          <Reveal className="location-content scroll-reveal">
             <SectionHeading eyebrow="Find your way">Location</SectionHeading>
-            <div className="location-card">
+            <div className="location-card scroll-reveal">
               <span className="location-card__icon"><MapPin size={21} /></span>
               <h3>{eventDetails[0].place}</h3>
               <p>{eventDetails[0].address}</p>
@@ -1081,10 +1147,10 @@ export default function Home() {
           style={{ backgroundImage: `linear-gradient(180deg, rgb(247 253 255 / .04), rgb(220 240 248 / .12)), url(${asset.soundtrack})` }}
         >
           <img className="soundtrack-engraving" src={ornament.engraving} alt="" />
-          <Reveal>
+          <Reveal className="scroll-reveal">
             <SectionHeading eyebrow="A song for our day">Our Soundtrack</SectionHeading>
           </Reveal>
-          <Reveal className="soundtrack-card">
+          <Reveal className="soundtrack-card scroll-reveal">
             <span className="soundtrack-card__disc"><Disc3 size={23} /></span>
             <p className="eyebrow">Now playing</p>
             <h3>Our Song Title</h3>
@@ -1096,13 +1162,13 @@ export default function Home() {
         </section>
 
         <section className="timeline-section parchment-section">
-          <Reveal>
+          <Reveal className="scroll-reveal">
             <SectionHeading eyebrow="Celebrate with us">Timeline</SectionHeading>
             <p className="intro-copy">A gentle guide to the moments we will share together.</p>
           </Reveal>
           <div className="timeline-list">
             {scheduleItems.map(([time, title, copy], index) => (
-              <Reveal key={time} delay={index * 0.08}>
+              <Reveal key={time} delay={index * 0.08} className="scroll-reveal">
                 <article className="timeline-item">
                   <span className="timeline-item__time"><Clock3 size={14} /> {time}</span>
                   <div>
@@ -1119,7 +1185,7 @@ export default function Home() {
           <div className="closing-section__wash" />
           <span className="closing-star closing-star--one" aria-hidden="true">✦</span>
           <span className="closing-star closing-star--two" aria-hidden="true">✦</span>
-          <Reveal className="closing-content">
+          <Reveal className="closing-content scroll-reveal">
             <CoutureCrest className="couture-crest--closing" />
             <p className="eyebrow">Counting the days</p>
             <div className="countdown-grid" aria-label="Countdown to wedding day">
@@ -1129,16 +1195,16 @@ export default function Home() {
                 [countdown.minutes, "Minutes"],
                 [countdown.seconds, "Seconds"],
               ].map(([value, label]) => (
-                <div key={label}>
+                <div key={label} className="scroll-reveal">
                   <strong>{value}</strong>
                   <span>{label}</span>
                 </div>
               ))}
             </div>
-            <a href={calendarLink} target="_blank" rel="noreferrer" className="save-date-button">
+            <a href={calendarLink} target="_blank" rel="noreferrer" className="save-date-button scroll-reveal">
               <CalendarDays size={16} /> Save The Date
             </a>
-            <div className="closing-blessing">
+            <div className="closing-blessing scroll-reveal">
               <p>It is a pleasure and honor for us, if you are willing to attend and give us your blessing.</p>
               <h2>Groom <span>&amp;</span> Bride</h2>
             </div>
