@@ -767,11 +767,11 @@ function ZoomEntranceOverlay({
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({ defaults: { ease: "power3.inOut" } });
 
-      /* Phase 1: Camera zooms into the cover (0 → 4s) */
+      /* Phase 1: Camera zooms into the cover (0 → 3.5s) */
       tl.fromTo(
         ".zeo__stage",
         { scale: 1, opacity: 1 },
-        { scale: 3, opacity: 0, duration: 4, ease: "power2.inOut" },
+        { scale: 4, opacity: 0, duration: 3.5, ease: "power2.inOut" },
         0,
       );
 
@@ -779,15 +779,23 @@ function ZoomEntranceOverlay({
       tl.fromTo(
         ".zeo__burst",
         { opacity: 0, scale: 0.2 },
-        { opacity: 1, scale: 2, duration: 2.5, ease: "power2.out" },
-        1.5,
+        { opacity: 1, scale: 2.5, duration: 2, ease: "power2.out" },
+        1.0,
       );
 
       /* Phase 3: Fade out burst at the end */
       tl.to(
         ".zeo__burst",
         { opacity: 0, duration: 0.5, ease: "power2.in" },
-        3.5,
+        3.0,
+      );
+
+      /* Phase 4: Reveal the actual cover content */
+      tl.fromTo(
+        ".cover-section",
+        { opacity: 0, scale: 0.95 },
+        { opacity: 1, scale: 1, duration: 1, ease: "power2.out" },
+        3.2,
       );
     }, overlayRef);
 
@@ -1132,8 +1140,8 @@ export default function Home() {
     if (opening) return;
     setOpening(true);
     void startBackgroundMusic(true);
-    // Force the 4000ms duration so the cinematic zoom animation always has time to play
-    window.setTimeout(() => setOpened(true), 4000);
+    // Force the 3500ms duration so the cinematic zoom animation always has time to play
+    window.setTimeout(() => setOpened(true), 3500);
   };
 
   const scrollToVow = () => {

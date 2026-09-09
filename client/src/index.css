@@ -1057,6 +1057,8 @@ a {
   position: relative;
   z-index: 1;
   text-align: center;
+  opacity: 1;
+  visibility: visible;
 }
 
 .gate-content {
@@ -1454,6 +1456,8 @@ a {
   place-items: center;
   background-position: center;
   background-size: cover;
+  opacity: 1;
+  visibility: visible;
 }
 
 .soft-vignette {
@@ -1546,6 +1550,8 @@ a {
   place-items: center;
   padding: 94px 27px 68px;
   background: rgb(249 253 255 / .64);
+  opacity: 1;
+  visibility: visible;
 }
 
 .cover-arch--oval {
@@ -2300,14 +2306,14 @@ a {
   inset: auto;
   top: 50%;
   left: 50%;
-  opacity: var(--cover-arch-opacity, .08);
-  transform: translate(-50%, calc(-50% + var(--cover-arch-y, 30px))) scale(var(--cover-arch-scale, .9));
+  opacity: var(--cover-arch-opacity, 1);
+  transform: translate(-50%, calc(-50% + var(--cover-arch-y, 0px))) scale(var(--cover-arch-scale, 1));
   transform-origin: 50% 50%;
 }
 
 .cover-parallax-stage .cover-content {
-  opacity: var(--cover-content-opacity, 0);
-  transform: translateY(var(--cover-content-y, 24px));
+  opacity: var(--cover-content-opacity, 1);
+  transform: translateY(var(--cover-content-y, 0px));
   transition: none;
 }
 
@@ -6153,10 +6159,17 @@ section {
     width: calc(100% - 30px);
     min-height: 80svh;
     padding: 80px 20px 60px;
+    opacity: 1 !important;
+    visibility: visible !important;
   }
 
   .cover-content h1 {
     font-size: 42px;
+  }
+
+  .cover-content {
+    opacity: 1 !important;
+    visibility: visible !important;
   }
 
   .endless-arch {
@@ -6495,6 +6508,18 @@ section {
 
   .cover-section {
     min-height: 100svh;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+
+  .cover-content {
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+
+  .cover-arch {
+    opacity: 1 !important;
+    visibility: visible !important;
   }
 
   /* Simplify scroll journey on mobile */
@@ -6530,6 +6555,22 @@ section {
   .gate-content {
     opacity: 1;
     visibility: visible;
+  }
+
+  /* Ensure cover content is visible after zoom on mobile */
+  .cover-content {
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+
+  .cover-arch {
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+
+  .couture-crest--cover {
+    opacity: 1 !important;
+    visibility: visible !important;
   }
 
   .cover-gateway {
