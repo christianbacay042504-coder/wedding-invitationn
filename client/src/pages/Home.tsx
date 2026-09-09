@@ -43,8 +43,6 @@ const asset = {
   couple: resolveAsset("wedding-blank-image-placeholder.png", "wedding-blank-image-placeholder_61c292af.png"),
   closing: resolveAsset("ivona-blue-closing-blooms.jpg", "ivona-blue-closing-blooms_8fff14cc.jpg"),
   logo: resolveAsset("ivona-blue-monogram.png", "ivona-blue-monogram_993937c9.png"),
-  video: resolveAsset("rene-yheng-std.mp4", "rene-yheng-std.mp4"),
-  floralFrame: resolveAsset("floral-framee.png", "floral-framee.png"),
 };
 
 const ornament = {
@@ -990,17 +988,6 @@ export default function Home() {
           <Reveal className="film-section__content">
             <p className="eyebrow">Our Prelude</p>
             <h2>A garden, a promise,<br />a lifetime.</h2>
-            <div className="film-section__video">
-              <video
-                src={asset.video}
-                controls
-                preload="metadata"
-                poster={asset.cover}
-                aria-label="Prewedding film of Groom and Bride"
-              >
-                Your browser does not support the video tag.
-              </video>
-            </div>
           </Reveal>
         </section>
 
