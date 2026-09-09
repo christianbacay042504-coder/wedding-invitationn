@@ -767,24 +767,28 @@ function ZoomEntranceOverlay({
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({ defaults: { ease: "power3.inOut" } });
 
-      /* Phase 1: Camera zooms into the cover (0 → 5.5s) */
+      /* Phase 1: Camera zooms into the cover (0 → 4s) */
       tl.fromTo(
         ".zeo__stage",
-        { scale: 1 },
-        { scale: 4, duration: 5.4, ease: "power2.inOut" },
+        { scale: 1, opacity: 1 },
+        { scale: 3, opacity: 0, duration: 4, ease: "power2.inOut" },
         0,
       );
 
       /* Phase 2: Radial light burst blooms gently to transition */
       tl.fromTo(
         ".zeo__burst",
-        { opacity: 0, scale: 0.1 },
-        { opacity: 1, scale: 1.5, duration: 3.5, ease: "power2.inOut" },
-        1.0,
+        { opacity: 0, scale: 0.2 },
+        { opacity: 1, scale: 2, duration: 2.5, ease: "power2.out" },
+        1.5,
       );
 
-      // Let standard React unmount handle the clean cut at 5.5s, 
-      // or AnimatePresence if placed inside the gate.
+      /* Phase 3: Fade out burst at the end */
+      tl.to(
+        ".zeo__burst",
+        { opacity: 0, duration: 0.5, ease: "power2.in" },
+        3.5,
+      );
     }, overlayRef);
 
     return () => ctx.revert();
@@ -1128,8 +1132,8 @@ export default function Home() {
     if (opening) return;
     setOpening(true);
     void startBackgroundMusic(true);
-    // Force the 5500ms duration so the cinematic zoom animation always has time to play
-    window.setTimeout(() => setOpened(true), 5500);
+    // Force the 4000ms duration so the cinematic zoom animation always has time to play
+    window.setTimeout(() => setOpened(true), 4000);
   };
 
   const scrollToVow = () => {
