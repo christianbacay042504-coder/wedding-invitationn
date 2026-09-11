@@ -210,6 +210,8 @@ a {
 .gate-wash {
   position: absolute;
   inset: 0;
+  width: 100%;
+  height: 100%;
 }
 
 .gate-image {
@@ -6669,6 +6671,12 @@ section {
   .invitation-shell,
   .invitation-content {
     overflow-x: hidden;
+    width: 100vw;
+  }
+
+  .invitation-gate {
+    overflow-x: hidden;
+    width: 100vw;
   }
 
   /* Fix potential overflow issues */
@@ -7266,6 +7274,35 @@ section {
   background-position: center;
   background-size: cover;
   transform-origin: 50% 47%;
+}
+
+/* Fix zoom animation spacing on mobile */
+@media (max-width: 768px) {
+  .zoom-entrance-overlay {
+    overflow-x: hidden;
+    width: 100vw;
+  }
+
+  .zeo__stage {
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+  }
+
+  .zeo__burst {
+    width: min(90vw, 400px);
+    height: min(90vw, 400px);
+  }
+
+  .gate-image {
+    width: 100vw;
+    height: 100vh;
+  }
+
+  .gate-wash {
+    width: 100vw;
+    height: 100vh;
+  }
 }
 
 .zeo__burst {
