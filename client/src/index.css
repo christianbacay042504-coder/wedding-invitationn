@@ -2993,6 +2993,23 @@ a {
   line-height: .95;
 }
 
+.film-section__video {
+  position: relative;
+  max-width: 100%;
+  margin: 32px auto 0;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgb(13 32 48 / .24);
+  background: #1a2d3a;
+}
+
+.film-section__video iframe {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: none;
+}
+
 
 
 .film-section__decoration {
@@ -3208,6 +3225,7 @@ a {
   overflow: hidden;
   padding: 35px 28px 31px;
   border-top: 2px solid var(--rosewood);
+  border-radius: 16px;
   background: rgb(252 254 255 / .76);
   box-shadow: 0 11px 21px rgb(54 91 122 / .1);
   text-align: center;
@@ -3216,6 +3234,7 @@ a {
 .event-section--lakeside .event-card {
   border-inline: 1px solid rgb(255 255 255 / .68);
   border-bottom: 1px solid rgb(94 127 159 / .22);
+  border-radius: 16px;
   background: rgb(249 253 255 / .78);
   box-shadow: 0 15px 28px rgb(43 79 103 / .12);
   backdrop-filter: blur(2px);
@@ -3509,6 +3528,7 @@ a {
   min-height: auto;
   padding: 28px 24px 24px;
   border: 1px solid rgb(94 127 159 / .4);
+  border-radius: 16px;
   background: rgb(252 254 255 / .78);
   box-shadow: 0 14px 24px rgb(48 86 120 / .1);
   text-align: center;
@@ -3516,6 +3536,7 @@ a {
 
 .attire-section--sundial .attire-card {
   border-color: rgb(94 127 159 / .48);
+  border-radius: 16px;
   background: rgb(249 253 255 / .79);
   box-shadow: 0 15px 28px rgb(43 79 103 / .11);
   backdrop-filter: blur(2px);
@@ -3656,6 +3677,7 @@ a {
   margin-top: 35px;
   padding: 33px 20px 29px;
   border: 1px solid rgb(94 127 159 / .44);
+  border-radius: 16px;
   background: rgb(252 254 255 / .84);
   box-shadow: 0 18px 33px rgb(48 86 120 / .14);
   text-align: center;
@@ -3669,6 +3691,7 @@ a {
 
 .location-section--garden-gate .location-card {
   border-color: rgb(94 127 159 / .48);
+  border-radius: 16px;
   background: rgb(250 254 255 / .81);
   box-shadow: 0 18px 33px rgb(43 79 103 / .13);
   backdrop-filter: blur(2px);
@@ -3699,6 +3722,7 @@ a {
   overflow: hidden;
   place-content: center;
   border: 1px solid rgb(94 127 159 / .45);
+  border-radius: 12px;
   background: linear-gradient(135deg, rgb(237 248 253 / .96), rgb(206 230 242 / .84)), repeating-linear-gradient(0deg, transparent 0 28px, rgb(94 127 159 / .06) 28px 29px), repeating-linear-gradient(90deg, transparent 0 38px, rgb(94 127 159 / .06) 38px 39px);
   color: var(--wine);
   isolation: isolate;
@@ -4058,6 +4082,7 @@ a {
 .timeline-item {
   position: relative;
   border: 1px solid rgb(94 127 159 / .3);
+  border-radius: 12px;
   background: rgb(252 254 255 / .78);
   overflow: hidden;
   transition: border-color 220ms ease, box-shadow 220ms ease;

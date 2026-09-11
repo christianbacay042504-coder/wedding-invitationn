@@ -68,6 +68,10 @@ const asset = {
   memory11: resolveAsset("memory11.jpg", "memory11.jpg"),
   memory12: resolveAsset("memory12.jpg", "memory12.jpg"),
   memory13: resolveAsset("memory13.jpg", "memory13.jpg"),
+  song1: resolveAsset("song1.mp3", "song1.mp3"),
+  song2: resolveAsset("song2.mp3", "song2.mp3"),
+  song3: resolveAsset("song3.mp3", "song3.mp3"),
+  song4: resolveAsset("song4.mp3", "song4.mp3"),
 };
 
 const ornament = {
@@ -930,24 +934,22 @@ export default function Home() {
   const [opened, setOpened] = useState(false);
   const [opening, setOpening] = useState(false);
   const [musicOn, setMusicOn] = useState(false);
+  const [soundtrackOn, setSoundtrackOn] = useState(false);
   const [openPhases, setOpenPhases] = useState<Set<string>>(() => new Set(["02"]));
   const [currentSongIndex, setCurrentSongIndex] = useState(0);
   const [progress, setProgress] = useState(0);
   const [lightboxImage, setLightboxImage] = useState<string | null>(null);
   const lenisRef = useRef<Lenis | null>(null);
   const musicRef = useRef<HTMLAudioElement | null>(null);
+  const soundtrackRef = useRef<HTMLAudioElement | null>(null);
   const countdown = useCountdown();
   const reduceMotion = useReducedMotion();
 
   const playlist = [
-    { title: "A Thousand Years", artist: "Christina Perri", duration: "4:45" },
-    { title: "Perfect", artist: "Ed Sheeran", duration: "4:23" },
-    { title: "All of Me", artist: "John Legend", duration: "4:29" },
-    { title: "Thinking Out Loud", artist: "Ed Sheeran", duration: "4:41" },
-    { title: "Beautiful in White", artist: "Shane Filan", duration: "4:05" },
-    { title: "Marry You", artist: "Bruno Mars", duration: "3:49" },
-    { title: "Just the Way You Are", artist: "Bruno Mars", duration: "3:58" },
-    { title: "Make You Feel My Love", artist: "Adele", duration: "3:32" },
+    { title: "Been So Good", artist: "Elevation Worship (feat. Tiffany Hudson)", duration: "5:30", src: asset.song1 },
+    { title: "Lilim Cover", artist: "UPC Imus Virtual Choir", duration: "4:45", src: asset.song2 },
+    { title: "Mula Sa Aking Puso", artist: "Joseph Ponce & Carlo David", duration: "5:15", src: asset.song3 },
+    { title: "Nangangamoy Pag Ibig", artist: "Kent Charcos (feat. Dana Algabre)", duration: "4:50", src: asset.song4 },
   ];
 
   const calendarLink = useMemo(() => {
@@ -1168,6 +1170,7 @@ export default function Home() {
   useEffect(() => {
     return () => {
       musicRef.current?.pause();
+      soundtrackRef.current?.pause();
     };
   }, []);
 
@@ -1175,6 +1178,12 @@ export default function Home() {
     const audio = musicRef.current;
     if (!audio) return;
     audio.volume = 0.46;
+
+    // Ensure the audio source is set
+    if (!audio.src || audio.src !== playlist[currentSongIndex].src) {
+      audio.src = playlist[currentSongIndex].src;
+    }
+
     if (startAtOpeningOffset) {
       const applyOpeningOffset = () => {
         audio.currentTime = 26;
@@ -1204,25 +1213,71 @@ export default function Home() {
     setMusicOn(false);
   };
 
+  const startSoundtrack = async () => {
+    const audio = soundtrackRef.current;
+    if (!audio) return;
+    audio.volume = 0.46;
+
+    if (!audio.src || audio.src !== playlist[currentSongIndex].src) {
+      audio.src = playlist[currentSongIndex].src;
+    }
+
+    try {
+      await audio.play();
+      setSoundtrackOn(true);
+    } catch {
+      setSoundtrackOn(false);
+    }
+  };
+
+  const toggleSoundtrack = () => {
+    const audio = soundtrackRef.current;
+    if (!audio) return;
+    if (audio.paused) {
+      void startSoundtrack();
+      return;
+    }
+    audio.pause();
+    setSoundtrackOn(false);
+  };
+
   const playNextSong = () => {
-    setCurrentSongIndex((prev) => (prev + 1) % playlist.length);
+    const nextIndex = (currentSongIndex + 1) % playlist.length;
+    setCurrentSongIndex(nextIndex);
+    const audio = soundtrackRef.current;
+    if (audio) {
+      audio.src = playlist[nextIndex].src;
+      if (soundtrackOn) {
+        void startSoundtrack();
+      }
+    }
   };
 
   const playPreviousSong = () => {
-    setCurrentSongIndex((prev) => (prev - 1 + playlist.length) % playlist.length);
+    const prevIndex = (currentSongIndex - 1 + playlist.length) % playlist.length;
+    setCurrentSongIndex(prevIndex);
+    const audio = soundtrackRef.current;
+    if (audio) {
+      audio.src = playlist[prevIndex].src;
+      if (soundtrackOn) {
+        void startSoundtrack();
+      }
+    }
   };
 
   const selectSong = (index: number) => {
     setCurrentSongIndex(index);
-    if (!musicOn) {
-      void startBackgroundMusic();
+    const audio = soundtrackRef.current;
+    if (audio) {
+      audio.src = playlist[index].src;
+      void startSoundtrack();
     }
   };
 
-  // Update progress bar
+  // Update progress bar and auto-advance
   useEffect(() => {
-    const audio = musicRef.current;
-    if (!audio || !musicOn) return;
+    const audio = soundtrackRef.current;
+    if (!audio || !soundtrackOn) return;
 
     const updateProgress = () => {
       if (audio.duration) {
@@ -1231,8 +1286,18 @@ export default function Home() {
     };
 
     const interval = setInterval(updateProgress, 100);
-    return () => clearInterval(interval);
-  }, [musicOn]);
+
+    const handleEnded = () => {
+      playNextSong();
+    };
+
+    audio.addEventListener('ended', handleEnded);
+
+    return () => {
+      clearInterval(interval);
+      audio.removeEventListener('ended', handleEnded);
+    };
+  }, [soundtrackOn, currentSongIndex]);
 
   const toggleTimelinePhase = (number: string) => {
     setOpenPhases((current) => {
@@ -1251,9 +1316,18 @@ export default function Home() {
     setOpenPhases(allTimelineOpen ? new Set() : new Set(ceremonyFlow.map((phase) => phase.number)));
   };
 
-  const openInvitation = () => {
+  const openInvitation = async () => {
     if (opening) return;
     setOpening(true);
+
+    // Ensure background audio is loaded before playing
+    const audio = musicRef.current;
+    if (audio) {
+      audio.load();
+      // Wait a bit for the audio to be ready
+      await new Promise(resolve => setTimeout(resolve, 100));
+    }
+
     void startBackgroundMusic(true);
     // Force the 3500ms duration so the cinematic zoom animation always has time to play
     window.setTimeout(() => setOpened(true), 3500);
@@ -1271,7 +1345,8 @@ export default function Home() {
 
   return (
     <main className="invitation-shell">
-      <audio ref={musicRef} src={asset.music} loop preload="metadata" />
+      <audio ref={musicRef} src={asset.music} loop preload="auto" />
+      <audio ref={soundtrackRef} src={playlist[currentSongIndex].src} preload="metadata" />
       <div className="film-grain" aria-hidden="true" />
 
       <AnimatePresence>
@@ -1503,6 +1578,17 @@ export default function Home() {
           <Reveal className="film-section__content">
             <p className="eyebrow">Our Prelude</p>
             <h2>A ministry, a promise,<br />a lifetime.</h2>
+            <div className="film-section__video">
+              <iframe
+                width="560"
+                height="315"
+                src="https://www.youtube.com/embed/ok_jH1kPDZw"
+                title="Wedding prelude video"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+            </div>
           </Reveal>
         </section>
 
@@ -1717,10 +1803,10 @@ export default function Home() {
               <button
                 type="button"
                 className="soundtrack-control-button soundtrack-control-button--main"
-                onClick={toggleBackgroundMusic}
-                aria-label={musicOn ? "Pause music" : "Play music"}
+                onClick={toggleSoundtrack}
+                aria-label={soundtrackOn ? "Pause music" : "Play music"}
               >
-                {musicOn ? <Pause size={24} fill="currentColor" /> : <Play size={24} fill="currentColor" />}
+                {soundtrackOn ? <Pause size={24} fill="currentColor" /> : <Play size={24} fill="currentColor" />}
               </button>
               <button
                 type="button"
@@ -1740,7 +1826,7 @@ export default function Home() {
                   onClick={() => selectSong(index)}
                 >
                   <span className="soundtrack-playlist-item__icon">
-                    {index === currentSongIndex && musicOn ? <Pause size={14} fill="currentColor" /> : <Play size={14} fill="currentColor" />}
+                    {index === currentSongIndex && soundtrackOn ? <Pause size={14} fill="currentColor" /> : <Play size={14} fill="currentColor" />}
                   </span>
                   <div className="soundtrack-playlist-item__info">
                     <h4 className="soundtrack-playlist-item__title">{song.title}</h4>
