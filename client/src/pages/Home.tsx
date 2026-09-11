@@ -19,6 +19,8 @@ import {
   Play,
   SkipForward,
   SkipBack,
+  Eye,
+  X,
 } from "lucide-react";
 import { HiOutlineSparkles } from "react-icons/hi2";
 import { tsParticles } from "@tsparticles/engine";
@@ -49,6 +51,23 @@ const asset = {
   couple: resolveAsset("wedding-blank-image-placeholder.png", "wedding-blank-image-placeholder_61c292af.png"),
   closing: resolveAsset("ivona-blue-closing-blooms.jpg", "ivona-blue-closing-blooms_8fff14cc.jpg"),
   logo: resolveAsset("ivona-blue-monogram.png", "ivona-blue-monogram_993937c9.png"),
+  back: resolveAsset("back.jpg", "back.jpg"),
+  wemet: resolveAsset("wemet.jpg", "wemet.jpg"),
+  groom: resolveAsset("groom.jpg", "groom.jpg"),
+  bride: resolveAsset("bride.jpg", "bride.jpg"),
+  memory1: resolveAsset("memory1.jpg", "memory1.jpg"),
+  memory2: resolveAsset("memory2.jpg", "memory2.jpg"),
+  memory3: resolveAsset("memory3.jpg", "memory3.jpg"),
+  memory4: resolveAsset("memory4.jpg", "memory4.jpg"),
+  memory5: resolveAsset("memory5.jpg", "memory5.jpg"),
+  memory6: resolveAsset("memory6.jpg", "memory6.jpg"),
+  memory7: resolveAsset("memory7.jpg", "memory7.jpg"),
+  memory8: resolveAsset("memory8.jpg", "memory8.jpg"),
+  memory9: resolveAsset("memory9.jpg", "memory9.jpg"),
+  memory10: resolveAsset("memory10.jpg", "memory10.jpg"),
+  memory11: resolveAsset("memory11.jpg", "memory11.jpg"),
+  memory12: resolveAsset("memory12.jpg", "memory12.jpg"),
+  memory13: resolveAsset("memory13.jpg", "memory13.jpg"),
 };
 
 const ornament = {
@@ -58,10 +77,21 @@ const ornament = {
   engraving: resolveAsset("ivona-blue-engraved-ornament.png", "ivona-blue-engraved-ornament_436c6e9d.png"),
 };
 
-const galleryImages = Array.from(
-  { length: 13 },
-  () => asset.couple,
-);
+const galleryImages = [
+  asset.memory1,
+  asset.memory2,
+  asset.memory3,
+  asset.memory4,
+  asset.memory5,
+  asset.memory6,
+  asset.memory7,
+  asset.memory8,
+  asset.memory9,
+  asset.memory10,
+  asset.memory11,
+  asset.memory12,
+  asset.memory13,
+];
 
 const eventDate = new Date("2026-09-21T09:00:00+08:00");
 
@@ -70,34 +100,59 @@ const eventDetails = [
     title: "Holy Matrimony",
     day: "Monday",
     date: "September 21, 2026",
-    time: "09.00 – 11.00 AM",
-    place: "Trees Residences, Fairview",
+    time: "2:30 – 5:00 PM",
+    place: "Trees Residences (Indoor Function Hall), Fairview",
     address: "Trees Residences, Quirino Highway, Novaliches, Quezon City, Metro Manila",
-    map: "https://maps.google.com/?q=Trees+Residences+Fairview",
+    map: "https://www.google.com/maps/place/Trees+Residences+Indoor+Function+Hall/@14.7359149,121.0616809,17z/data=!3m1!4b1!4m6!3m5!1s0x3397b10006988d2d:0xdbbe01d6a6ce9fd9!8m2!3d14.7359097!4d121.0642558!16s%2Fg%2F11vwzw9vdj?entry=ttu&g_ep=EgoyMDI2MDkwOC4wIKXMDSoASAFQAw%3D%3D",
   },
   {
     title: "Reception",
     day: "Monday",
     date: "September 21, 2026",
-    time: "06.00 – 09.00 PM",
-    place: "Trees Residences, Fairview",
+    time: "5:00 – 6:30 PM",
+    place: "Trees Residences (Indoor Function Hall), Fairview",
     address: "Trees Residences, Quirino Highway, Novaliches, Quezon City, Metro Manila",
-    map: "https://maps.google.com/?q=Trees+Residences+Fairview",
+    map: "https://www.google.com/maps/place/Trees+Residences+Indoor+Function+Hall/@14.7359149,121.0616809,17z/data=!3m1!4b1!4m6!3m5!1s0x3397b10006988d2d:0xdbbe01d6a6ce9fd9!8m2!3d14.7359097!4d121.0642558!16s%2Fg%2F11vwzw9vdj?entry=ttu&g_ep=EgoyMDI2MDkwOC4wIKXMDSoASAFQAw%3D%3D",
   },
 ];
 
-const attireGuidelines = [
-  {
-    role: "Ladies",
-    note: "Formal dress or gown in light blue, powder blue, or soft silver tones.",
-    colors: ["#d7edf8", "#a8cce0", "#8aaec5"],
-  },
-  {
-    role: "Gentlemen",
-    note: "Formal suit, barong, or long-sleeve shirt in navy, slate blue, or white.",
-    colors: ["#f6fbfe", "#527b9e", "#294a66"],
-  },
-];
+const attirePalette = ["#f6fbfe", "#c9dbe7", "#8aaec5", "#5e7f9f", "#263a48"];
+
+const attireGuidelines: {
+  role: string;
+  details: { label: string; value: string }[];
+  icons: { type: "bag" | "heels" | "lipstick"; label: string }[];
+}[] = [
+    {
+      role: "Ladies",
+      details: [
+        { label: "Hair", value: "Soft waves or an elegant updo" },
+        { label: "Makeup", value: "Dewy, flawless finish" },
+        { label: "Dress", value: "Long, formal gown" },
+        { label: "Color", value: "Powder blue to silver gradient" },
+        { label: "Footwear", value: "Comfortable heels" },
+      ],
+      icons: [
+        { type: "bag", label: "Clutch" },
+        { type: "lipstick", label: "Soft glam" },
+        { type: "heels", label: "Heels" },
+      ],
+    },
+    {
+      role: "Gentlemen",
+      details: [
+        { label: "Hair", value: "Classic, groomed style" },
+        { label: "Attire", value: "Barong or long-sleeve polo" },
+        { label: "Suit", value: "Navy or slate blue blazer, optional" },
+        { label: "Color", value: "Navy, slate blue, or white" },
+        { label: "Footwear", value: "Formal leather shoes" },
+      ],
+      icons: [
+        { type: "bag", label: "Belt & watch" },
+        { type: "heels", label: "Leather shoes" },
+      ],
+    },
+  ];
 
 type CeremonySubItem = {
   label: string;
@@ -119,7 +174,7 @@ const ceremonyFlow: CeremonyPhase[] = [
   {
     number: "01",
     title: "Prelude",
-    time: "2:00 – 2:05 PM",
+    time: "2:30 – 2:35 PM",
     song: "Firm Foundation (Instrumental) — c/o Lights & Sound",
     notes: [
       "Soft background music as guests arrive and are seated.",
@@ -130,28 +185,28 @@ const ceremonyFlow: CeremonyPhase[] = [
   {
     number: "02",
     title: "Processional",
-    time: "2:10 – 3:10 PM",
+    time: "2:35 – 3:35 PM",
     song: "1st Song — Alabaster Jar & Been So Good (Piano with Singer)",
     notes: ["Entrance of the entourage (parents, sponsors, bridesmaids, groomsmen), followed by the entrance of the bride."],
     subitems: [
-      { label: "Pastor", name: "Pr. Manny Manuel", time: "2:10 – 2:15" },
-      { label: "Principal Sponsors", name: "Enter by partner", time: "2:15 – 2:20" },
-      { label: "Groom with Parents", name: "Renato Rosal & Marichu Rosal", time: "2:20 – 2:25" },
-      { label: "Candle Sponsors", name: "Adrin Tipones & Ilona Jean Rosal", time: "2:25 – 2:30" },
-      { label: "Veil Sponsors", name: "Pres Joel Manuel & Rica Jaine Rosal (Remover: Cyrus Palomar & Rose Jane Atibagos)", time: "2:30 – 2:35" },
-      { label: "Cord Sponsors", name: "Elijah Hernandez & Angela Diaz (Remover: Atty. Jorenz Obiedo & Donisa Diaz)", time: "2:35 – 2:40" },
-      { label: "Maid of Honor & Best Man", name: "James Hernandez & Jennifer Diaz · Ptr. Justine Rosal & Mhariz Diaz", time: "2:40 – 2:45" },
-      { label: "Ring Bearer", name: "Azarayah Baisa", time: "2:45 – 2:50" },
-      { label: "Bible Bearer", name: "Abdiel John Lael Diaz", time: "2:50 – 2:55" },
-      { label: "Coin Bearer", name: "Lance Leo Mendoza", time: "2:55 – 3:00" },
-      { label: "Flower Girls", name: "Nathalia Jaine Rosal, Princess Ryzza Rosal, Zia Jean Grace, Faith Diaz", time: "3:00 – 3:05" },
-      { label: "The Bride", name: "With parents Damaso Diaz & Susan Diaz", time: "3:05 – 3:10" },
+      { label: "Pastor", name: "Pr. Manny Manuel", time: "2:35 – 2:40" },
+      { label: "Principal Sponsors", name: "Enter by partner", time: "2:40 – 2:45" },
+      { label: "Groom with Parents", name: "Renato Rosal & Marichu Rosal", time: "2:45 – 2:50" },
+      { label: "Candle Sponsors", name: "Adrin Tipones & Ilona Jean Rosal", time: "2:50 – 2:55" },
+      { label: "Veil Sponsors", name: "Pres Joel Manuel & Rica Jaine Rosal (Remover: Cyrus Palomar & Rose Jane Atibagos)", time: "2:55 – 3:00" },
+      { label: "Cord Sponsors", name: "Elijah Hernandez & Angela Diaz (Remover: Atty. Jorenz Obiedo & Donisa Diaz)", time: "3:00 – 3:05" },
+      { label: "Maid of Honor & Best Man", name: "James Hernandez & Jennifer Diaz · Ptr. Justine Rosal & Mhariz Diaz", time: "3:05 – 3:10" },
+      { label: "Ring Bearer", name: "Azarayah Baisa", time: "3:10 – 3:15" },
+      { label: "Bible Bearer", name: "Abdiel John Lael Diaz", time: "3:15 – 3:20" },
+      { label: "Coin Bearer", name: "Lance Leo Mendoza", time: "3:20 – 3:25" },
+      { label: "Flower Girls", name: "Nathalia Jaine Rosal, Princess Ryzza Rosal, Zia Jean Grace, Faith Diaz", time: "3:25 – 3:30" },
+      { label: "The Bride", name: "With parents Damaso Diaz & Susan Diaz", time: "3:30 – 3:35" },
     ],
   },
   {
     number: "02b",
     title: "The Bride's Entrance",
-    time: "3:05 – 3:10 PM",
+    time: "3:35 – 3:40 PM",
     song: "2nd Song — What A Beautiful Name It Is (Chorus, piano instrumental)",
   },
   {
@@ -164,41 +219,41 @@ const ceremonyFlow: CeremonyPhase[] = [
     number: "04",
     title: "Opening Words from the Officiating Minister",
     approx: true,
-    time: "3:10 – 3:15 PM",
+    time: "3:40 – 3:45 PM",
   },
   {
     number: "05",
     title: "Candle Sponsors — Lighting the Candles",
-    time: "3:15 – 3:20 PM",
+    time: "3:45 – 3:50 PM",
     song: "4th Song — Reckless Love (Chorus & Bridge, piano)",
     subitems: [{ label: "Candle Sponsors", name: "Adrin Tipones & Ilona Jean Rosal" }],
   },
   {
     number: "06",
     title: "Opening Prayer",
-    time: "3:20 – 3:25 PM",
+    time: "3:50 – 3:55 PM",
     song: "5th Song — Jesus at the Center (Piano Instrumental, plays through this segment)",
     notes: ["Ptra. Corazon Manuel"],
   },
   {
     number: "07",
     title: "Parents — Blessing and Pledge of Support",
-    time: "3:25 – 3:30 PM",
+    time: "3:55 – 4:00 PM",
   },
   {
     number: "08",
     title: "Reading & Short Exhortation of the Minister",
-    time: "3:30 – 3:35 PM",
+    time: "4:00 – 4:05 PM",
   },
   {
     number: "09",
     title: "Declaration of Intentions — \"I Do\"",
-    time: "3:35 – 3:40 PM",
+    time: "4:05 – 4:10 PM",
   },
   {
     number: "10",
     title: "Presentation of Rings, Coin & Bible",
-    time: "3:40 – 3:45 PM",
+    time: "4:10 – 4:15 PM",
     subitems: [
       { label: "Rings", name: "Azarayah Baisa" },
       { label: "Coin", name: "Lance Leo Mendoza" },
@@ -208,23 +263,23 @@ const ceremonyFlow: CeremonyPhase[] = [
   {
     number: "11",
     title: "Exchange of Rings and Giving of Vows",
-    time: "3:45 – 3:50 PM",
+    time: "4:15 – 4:20 PM",
   },
   {
     number: "12",
     title: "Giving of the Arrhae / Aras",
-    time: "3:50 – 3:55 PM",
+    time: "4:20 – 4:25 PM",
   },
   {
     number: "13",
     title: "Giving of the Bible",
-    time: "3:55 – 4:00 PM",
+    time: "4:25 – 4:30 PM",
     notes: ["Minister will give a short exhortation; the veil and cord ceremony follow right after."],
   },
   {
     number: "14",
     title: "Pinning of the Veil",
-    time: "4:05 – 4:10 PM",
+    time: "4:30 – 4:35 PM",
     song: "6th Song — Build My Life (Piano with Singer)",
     subitems: [{ label: "Veil Sponsors", name: "Pres Joel Manuel & Rica Jaine Rosal" }],
   },
@@ -278,7 +333,6 @@ const ceremonyFlow: CeremonyPhase[] = [
     title: "Presentation of the Newlywed",
     time: "4:50 – 4:55 PM",
     song: "9th Song — Mula sa Aking Puso (c/o Lights & Sound)",
-    notes: ["The chorus starts, then continues to play right after the kiss."],
   },
   {
     number: "23",
@@ -306,6 +360,31 @@ const ceremonyFlow: CeremonyPhase[] = [
       { label: "13", name: "Bride and Groom with Groom's Immediate Family" },
       { label: "14", name: "Bride and Groom with Groom's Immediate Family and Relatives" },
       { label: "15", name: "Bride and Groom with all friends" },
+    ],
+  },
+  {
+    number: "25",
+    title: "Reception Program",
+    time: "5:00 – 6:30 PM",
+    subitems: [
+      { label: "•", name: "Pre-Program" },
+      { label: "•", name: "Worship Rally" },
+      { label: "•", name: "Opening Prayer" },
+      { label: "•", name: "Game 1: How Well Do You Know The Couple (5-10 Questions)" },
+      { label: "•", name: "Sending-off Dance" },
+      { label: "•", name: "Couple's First Dance" },
+      { label: "•", name: "Fortune Dance" },
+      { label: "•", name: "Cake-Slicing" },
+      { label: "•", name: "Ceremonial Toast" },
+      { label: "•", name: "Game 2: Bring Me" },
+      { label: "•", name: "Blessing of the Food" },
+      { label: "•", name: "Photo Opportunity" },
+      { label: "•", name: "DINNER" },
+      { label: "•", name: "Game 3: Guess the title of the song" },
+      { label: "•", name: "Well-wishers" },
+      { label: "•", name: "SDE Video" },
+      { label: "•", name: "Couple's Thank You Speech" },
+      { label: "•", name: "Outro" },
     ],
   },
 ];
@@ -398,12 +477,47 @@ function SectionHeading({
   );
 }
 
+function AttireIcon({ type }: { type: "bag" | "heels" | "lipstick" }) {
+  const common = {
+    viewBox: "0 0 24 24",
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: 1.2,
+    strokeLinecap: "round" as const,
+    strokeLinejoin: "round" as const,
+  };
+  if (type === "bag") {
+    return (
+      <svg {...common} width="18" height="18" aria-hidden="true">
+        <path d="M4 9.5c0-.9.7-1.6 1.6-1.6h12.8c.9 0 1.6.7 1.6 1.6v8.4c0 1.2-1 2.1-2.1 2.1H6.1C5 20 4 19.1 4 17.9V9.5Z" />
+        <path d="M9 8V6.6C9 5.2 10.2 4 11.6 4h.8C13.8 4 15 5.2 15 6.6V8" />
+        <circle cx="12" cy="12.2" r="1" />
+      </svg>
+    );
+  }
+  if (type === "lipstick") {
+    return (
+      <svg {...common} width="18" height="18" aria-hidden="true">
+        <path d="M9.5 21V13.5c0-1.4 1.1-2.5 2.5-2.5s2.5 1.1 2.5 2.5V21h-5Z" />
+        <path d="M9.5 13.2 12 4l2.5 9.2" />
+        <path d="M9.8 17h4.4" />
+      </svg>
+    );
+  }
+  return (
+    <svg {...common} width="18" height="18" aria-hidden="true">
+      <path d="M4.5 19.5c0-1.6 1.6-2 3.4-2.4 1.7-.4 2.7-.9 3-1.9.3-1-.2-1.8-1-2.6-1.3-1.3-1.9-2.8-1.1-4.4C9.6 6.6 11 6 12.4 6.4c1.6.5 2.3 1.9 2.6 3.4.4 2 .3 4.4-.2 6.6-.3 1.4-.2 2.3.9 2.7.9.3 1.8.2 2.4-.4" />
+      <path d="M4.5 19.5h15" />
+    </svg>
+  );
+}
+
 function CoutureCrest({ className = "" }: { className?: string }) {
   return (
-    <div className={`couture-crest ${className}`} aria-label="Groom and Bride monogram">
-      <span>G</span>
+    <div className={`couture-crest ${className}`} aria-label="Rene and Yheng">
+      <span>R</span>
       <em>&amp;</em>
-      <span>B</span>
+      <span>Y</span>
     </div>
   );
 }
@@ -613,7 +727,7 @@ function CinematicIntro({ reducedMotion }: { reducedMotion: boolean }) {
       <div className="cinematic-intro__title premium-intro__title">
         <span className="premium-intro__seal"><HiOutlineSparkles /></span>
         <i className="premium-intro__eyebrow">A garden opens for</i>
-        <strong>Groom <em>&amp;</em> Bride</strong>
+        <strong>Rene <em>&amp;</em> Yheng</strong>
         <span className="premium-intro__rule" />
         <small className="premium-intro__status">A floral story, unfolding</small>
       </div>
@@ -819,6 +933,7 @@ export default function Home() {
   const [openPhases, setOpenPhases] = useState<Set<string>>(() => new Set(["02"]));
   const [currentSongIndex, setCurrentSongIndex] = useState(0);
   const [progress, setProgress] = useState(0);
+  const [lightboxImage, setLightboxImage] = useState<string | null>(null);
   const lenisRef = useRef<Lenis | null>(null);
   const musicRef = useRef<HTMLAudioElement | null>(null);
   const countdown = useCountdown();
@@ -837,10 +952,10 @@ export default function Home() {
 
   const calendarLink = useMemo(() => {
     const params = new URLSearchParams({
-      text: "The Wedding of Groom & Bride",
+      text: "The Wedding of Rene & Yheng",
       details: "With grateful hearts, we invite you to share our first day as husband and wife.",
-      location: "Trees Residences, Fairview, Quezon City",
-      dates: "20260921T010000Z/20260921T030000Z",
+      location: "Trees Residences (Indoor Function Hall), Fairview, Quezon City",
+      dates: "20260921T063000Z/20260921T103000Z",
     });
     return `https://calendar.google.com/calendar/render?action=TEMPLATE&${params.toString()}`;
   }, []);
@@ -1191,13 +1306,13 @@ export default function Home() {
                 <CoutureCrest className="couture-crest--gate" />
                 <p className="eyebrow">The Wedding Of</p>
                 <h1 className="couple-names couple-names--gate">
-                  <b>Groom</b>
+                  <b>Rene</b>
                   <span>&amp;</span>
-                  <b>Bride</b>
+                  <b>Yheng</b>
                 </h1>
                 <div className="gate-rule" />
-                <p className="guest-label">Dear</p>
-                <p className="guest-name">Guest Name</p>
+                <p className="guest-label"></p>
+                <p className="guest-name"></p>
                 <button className="open-button" type="button" onClick={openInvitation} disabled={opening}>
                   <span>{opening ? "Unfolding our story" : "Open Invitation"}</span>
                   <Heart size={13} fill="currentColor" />
@@ -1288,7 +1403,7 @@ export default function Home() {
                 <CoutureCrest className="couture-crest--cover" />
                 <p className="eyebrow">The Wedding Of</p>
                 <h1>
-                  Groom <span>&amp;</span> Bride
+                  Rene <span>&amp;</span> Yheng
                 </h1>
                 <p className="cover-date">Monday · September 21, 2026</p>
                 <button className="scroll-cue" type="button" onClick={scrollToVow}>
@@ -1311,7 +1426,7 @@ export default function Home() {
             <img className="endless-ornament endless-ornament--top" src={ornament.engraving} alt="" />
             <span className="endless-seal"><Sparkles size={15} strokeWidth={1.4} /></span>
             <div className="endless-image-frame">
-              <img src={asset.couple} alt="Endless Love image placeholder" />
+              <img src={asset.back} alt="Endless Love couple" />
             </div>
             <img className="endless-ornament endless-ornament--bottom" src={ornament.engraving} alt="" />
             <h2>Endless Love</h2>
@@ -1332,18 +1447,18 @@ export default function Home() {
           <span className="paper-orbit paper-orbit--one" aria-hidden="true" />
           <span className="paper-orbit paper-orbit--two" aria-hidden="true" />
           <Reveal className="couple-heading-reveal scroll-reveal">
-            <SectionHeading eyebrow="With grateful hearts">Groom &amp; Bride</SectionHeading>
+            <SectionHeading eyebrow="With grateful hearts">Rene &amp; Yheng</SectionHeading>
           </Reveal>
           <div className="couple-card couple-card--groom">
             <div className="portrait-wrap">
-              <img src={asset.couple} alt="Groom portrait placeholder" />
+              <img src={asset.groom} alt="Groom portrait" />
               <span className="portrait-label">The Groom</span>
             </div>
             <div className="person-copy">
               <p className="eyebrow">A beloved son</p>
               <h3>Groom</h3>
-              <p>Eldest son of Mr. Swee Lik Low &amp; Mrs. Sock Tin Tan</p>
-              <a href="https://www.instagram.com/" target="_blank" rel="noreferrer" aria-label="Jay See's Instagram">
+              <p>Eldest son of Renato Rosal &amp; Marichu Rosal</p>
+              <a href="https://www.instagram.com/" target="_blank" rel="noreferrer" aria-label="R Instagram">
                 <Instagram size={18} />
               </a>
             </div>
@@ -1353,13 +1468,13 @@ export default function Home() {
             <div className="person-copy">
               <p className="eyebrow">A cherished daughter</p>
               <h3>Bride</h3>
-              <p>Eldest daughter of Mr. Swee Lik Jesisca &amp; Mrs. Sock Tin Tan</p>
-              <a href="https://www.instagram.com/" target="_blank" rel="noreferrer" aria-label="Micheala's Instagram">
+              <p>Eldest daughter of Damaso Diaz &amp; Susan Diaz</p>
+              <a href="https://www.instagram.com/" target="_blank" rel="noreferrer" aria-label="Rose Jane's Instagram">
                 <Instagram size={18} />
               </a>
             </div>
             <div className="portrait-wrap portrait-wrap--offset">
-              <img src={asset.couple} alt="Bride portrait placeholder" />
+              <img src={asset.bride} alt="Bride portrait" />
               <span className="portrait-label">The Bride</span>
             </div>
           </div>
@@ -1387,7 +1502,7 @@ export default function Home() {
           <ButterflyConstellation className="butterfly-constellation--film" />
           <Reveal className="film-section__content">
             <p className="eyebrow">Our Prelude</p>
-            <h2>A garden, a promise,<br />a lifetime.</h2>
+            <h2>A ministry, a promise,<br />a lifetime.</h2>
           </Reveal>
         </section>
 
@@ -1434,20 +1549,50 @@ export default function Home() {
             <SectionHeading eyebrow="Dress with us">Attire Guidelines</SectionHeading>
             <p className="intro-copy">A touch of blue will make the day feel even more like ours.</p>
           </Reveal>
-          <div className="attire-grid">
-            {attireGuidelines.map((attire, index) => (
-              <Reveal key={attire.role} delay={index * 0.08} className="scroll-reveal">
-                <article className="attire-card">
-                  <span className="attire-card__icon"><Shirt size={20} /></span>
-                  <p className="eyebrow">{attire.role}</p>
-                  <p>{attire.note}</p>
-                  <div className="attire-swatches" aria-label={`${attire.role} color palette`}>
-                    {attire.colors.map((color) => <i key={color} style={{ backgroundColor: color }} />)}
-                  </div>
-                </article>
-              </Reveal>
-            ))}
-          </div>
+
+          <Reveal className="attire-colors scroll-reveal">
+            <p className="attire-colors__label">
+              <span className="attire-colors__script">the</span> Colors
+            </p>
+            <div className="attire-colors__row" aria-label="Wedding color palette">
+              {attirePalette.map((color) => (
+                <i key={color} style={{ backgroundColor: color }} />
+              ))}
+            </div>
+          </Reveal>
+
+          <Reveal className="attire-look scroll-reveal">
+            <p className="attire-look__label">
+              <span className="attire-look__script">the</span> Look
+            </p>
+            <div className="attire-grid">
+              {attireGuidelines.map((attire, index) => (
+                <Reveal key={attire.role} delay={index * 0.08} className="scroll-reveal">
+                  <article className="attire-card">
+                    <span className="attire-card__icon"><Shirt size={18} /></span>
+                    <p className="eyebrow">{attire.role}</p>
+                    <ul className="attire-look__list">
+                      {attire.details.map((detail) => (
+                        <li key={detail.label}>
+                          <span className="attire-look__label-text">{detail.label}</span>
+                          <span className="attire-look__sep">|</span>
+                          <span className="attire-look__value">{detail.value}</span>
+                        </li>
+                      ))}
+                    </ul>
+                    <div className="attire-look__icons">
+                      {attire.icons.map((icon) => (
+                        <div className="attire-look__icon" key={icon.label}>
+                          <span className="attire-look__icon-circle"><AttireIcon type={icon.type} /></span>
+                          <em>{icon.label}</em>
+                        </div>
+                      ))}
+                    </div>
+                  </article>
+                </Reveal>
+              ))}
+            </div>
+          </Reveal>
         </section>
 
         <section
@@ -1463,7 +1608,12 @@ export default function Home() {
           <div className="gallery-grid">
             {galleryImages.map((src, index) => (
               <Reveal key={`gallery-placeholder-${index + 1}`} delay={(index % 3) * 0.06} className={`gallery-tile gallery-tile--${index + 1} scroll-reveal`}>
-                <img src={src} alt={`Wedding gallery placeholder ${index + 1}`} />
+                <div className="gallery-image-wrapper" onClick={() => setLightboxImage(src)}>
+                  <img src={src} alt={`Wedding gallery placeholder ${index + 1}`} />
+                  <span className="gallery-view-indicator" aria-label="Click to view image">
+                    <Eye size={20} />
+                  </span>
+                </div>
                 <span className="polaroid-caption">Memory {index + 1}</span>
               </Reveal>
             ))}
@@ -1508,13 +1658,13 @@ export default function Home() {
             <SectionHeading eyebrow="Love Story" light>Our little history</SectionHeading>
           </Reveal>
           <Reveal className="story-image-wrap">
-            <img src={asset.couple} alt="Love story image placeholder" />
+            <img src={asset.wemet} alt="Love story couple" />
           </Reveal>
           <div className="story-list">
             {[
-              ["01", "first meeting", "At the beginning of our acquaintance, we were in the same class in college. A private chat, a shared hometown, and a small friendship opened the way."],
-              ["02", "two become one", "From easy conversations came a friendship that learned patience, laughter, and the rare comfort of being known by another heart."],
-              ["03", "new journey", "Today, with the people who have shaped our lives beside us, we begin the gentle work and joy of building a home together."],
+              ["01", "first meeting", "We met at Apostolic Tabernacle of Mt. Heights Church, specifically in evangelism ministry. The ministry of winning souls coupled with uncomfortable situations and circumstances opened the way."],
+              ["02", "two become one", "Little did they know that by doing their God-given ministry faced by situations not favorable to both of them came an open door for their hearts to grow in love with each other."],
+              ["03", "new journey", "Today, in the perfect will of the Lord and with the people who have shaped our lives beside us, we begin the gentle work and joy of building a home together."],
             ].map(([number, title, copy], index) => (
               <Reveal key={number} delay={index * 0.1}>
                 <article className="story-item">
@@ -1661,7 +1811,7 @@ export default function Home() {
             </a>
             <div className="closing-blessing scroll-reveal">
               <p>It is a pleasure and honor for us, if you are willing to attend and give us your blessing.</p>
-              <h2>Groom <span>&amp;</span> Bride</h2>
+              <h2>Rene <span>&amp;</span> Yheng</h2>
             </div>
           </Reveal>
         </section>
@@ -1669,7 +1819,7 @@ export default function Home() {
         <footer>
           <img src={asset.logo} alt="" />
           <p>Made with love for a day to remember</p>
-          <span>© 2026 Groom &amp; Bride</span>
+          <span>© 2026 Rene &amp; Yheng</span>
         </footer>
       </div>
 
@@ -1683,6 +1833,32 @@ export default function Home() {
         >
           {musicOn ? <Pause size={16} fill="currentColor" /> : <Music2 size={16} />}
         </button>
+      )}
+
+      {lightboxImage && (
+        <motion.div
+          className="lightbox"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          onClick={() => setLightboxImage(null)}
+        >
+          <motion.img
+            src={lightboxImage}
+            alt="Gallery image in lightbox"
+            initial={{ scale: 0.8 }}
+            animate={{ scale: 1 }}
+            exit={{ scale: 0.8 }}
+            onClick={(e) => e.stopPropagation()}
+          />
+          <button
+            className="lightbox-close"
+            onClick={() => setLightboxImage(null)}
+            aria-label="Close lightbox"
+          >
+            <X size={24} />
+          </button>
+        </motion.div>
       )}
 
     </main>
