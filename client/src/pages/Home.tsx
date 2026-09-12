@@ -131,7 +131,6 @@ const attireGuidelines: {
       role: "Ladies",
       details: [
         { label: "Hair", value: "Soft waves or an elegant updo" },
-        { label: "Makeup", value: "Dewy, flawless finish" },
         { label: "Dress", value: "Long, formal gown" },
         { label: "Color", value: "Powder blue to silver gradient" },
         { label: "Footwear", value: "Comfortable heels" },
@@ -180,11 +179,6 @@ const ceremonyFlow: CeremonyPhase[] = [
     title: "Prelude",
     time: "2:30 – 2:35 PM",
     song: "Firm Foundation (Instrumental) — c/o Lights & Sound",
-    notes: [
-      "Soft background music as guests arrive and are seated.",
-      "Ushers guide guests to their seats.",
-      "Floor Coordinator is responsible for crowd control.",
-    ],
   },
   {
     number: "02",
@@ -342,7 +336,7 @@ const ceremonyFlow: CeremonyPhase[] = [
     number: "23",
     title: "Recessional",
     time: "4:55 – 5:00 PM",
-    song: "10th Song — TBD",
+    song: "9th Song — Mula sa Aking Puso (c/o Lights & Sound)",
   },
   {
     number: "24",
@@ -980,7 +974,6 @@ export default function Home() {
       smoothWheel: true,
       wheelMultiplier: 0.82,
       touchMultiplier: 1.05,
-      smoothTouch: false // Disable smooth touch for better mobile performance
     });
     lenisRef.current = lenis;
     let frame = 0;
@@ -1021,7 +1014,7 @@ export default function Home() {
     // Set gallery index for staggered animation
     const galleryTiles = document.querySelectorAll('.gallery-tile');
     galleryTiles.forEach((tile, index) => {
-      tile.style.setProperty('--gallery-index', index.toString());
+      (tile as HTMLElement).style.setProperty('--gallery-index', index.toString());
     });
 
     return () => {
@@ -1532,7 +1525,7 @@ export default function Home() {
             <div className="person-copy">
               <p className="eyebrow">A beloved son</p>
               <h3>Groom</h3>
-              <p>Eldest son of Renato Rosal &amp; Marichu Rosal</p>
+              <p>son of Renato Rosal &amp; Marichu Rosal</p>
               <a href="https://www.instagram.com/" target="_blank" rel="noreferrer" aria-label="R Instagram">
                 <Instagram size={18} />
               </a>
@@ -1543,7 +1536,7 @@ export default function Home() {
             <div className="person-copy">
               <p className="eyebrow">A cherished daughter</p>
               <h3>Bride</h3>
-              <p>Eldest daughter of Damaso Diaz &amp; Susan Diaz</p>
+              <p>daughter of Damaso Diaz &amp; Susan Diaz</p>
               <a href="https://www.instagram.com/" target="_blank" rel="noreferrer" aria-label="Rose Jane's Instagram">
                 <Instagram size={18} />
               </a>
@@ -1749,7 +1742,7 @@ export default function Home() {
           <div className="story-list">
             {[
               ["01", "first meeting", "We met at Apostolic Tabernacle of Mt. Heights Church, specifically in evangelism ministry. The ministry of winning souls coupled with uncomfortable situations and circumstances opened the way."],
-              ["02", "two become one", "Little did they know that by doing their God-given ministry faced by situations not favorable to both of them came an open door for their hearts to grow in love with each other."],
+              ["02", "First person point of view", "Little did we know that by doing our God-given ministries faced by situations not favorable to both of us came an open door for our hearts to grow in love with each other."],
               ["03", "new journey", "Today, in the perfect will of the Lord and with the people who have shaped our lives beside us, we begin the gentle work and joy of building a home together."],
             ].map(([number, title, copy], index) => (
               <Reveal key={number} delay={index * 0.1}>
