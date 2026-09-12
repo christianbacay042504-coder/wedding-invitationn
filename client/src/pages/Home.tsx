@@ -49,6 +49,7 @@ const asset = {
   soundtrack: resolveAsset("ivona-user-fountain-soundtrack.webp", "ivona-user-fountain-soundtrack_3c4125ed.webp"),
   music: resolveAsset("ivona-lovestory-background-music.mp3", "ivona-lovestory-background-music_a20208a9.mp3"),
   couple: resolveAsset("wedding-blank-image-placeholder.png", "wedding-blank-image-placeholder_61c292af.png"),
+  coverPhoto: resolveAsset("bg2.jpg", "bg2.jpg"),
   closing: resolveAsset("ivona-blue-closing-blooms.jpg", "ivona-blue-closing-blooms_8fff14cc.jpg"),
   logo: resolveAsset("ivona-blue-monogram.png", "ivona-blue-monogram_993937c9.png"),
   back: resolveAsset("back.jpg", "back.jpg"),
@@ -744,8 +745,8 @@ function CinematicIntro({ reducedMotion }: { reducedMotion: boolean }) {
   );
 }
 
-function ArchFrame({ children, className = "" }: { children: React.ReactNode; className?: string }) {
-  return <div className={`arch-frame ${className}`}>{children}</div>;
+function ArchFrame({ children, className = "", style }: { children: React.ReactNode; className?: string; style?: CSSProperties }) {
+  return <div className={`arch-frame ${className}`} style={style}>{children}</div>;
 }
 
 function Reveal({ children, delay = 0, className = "" }: { children: React.ReactNode; delay?: number; className?: string }) {
@@ -1466,7 +1467,15 @@ export default function Home() {
               <img className="corner-flower corner-flower--bottom-right" src={ornament.corner} alt="" />
             </div>
             <CoverFloralFrame />
-            <ArchFrame className="cover-arch cover-arch--oval">
+            <ArchFrame
+              className="cover-arch cover-arch--oval"
+              style={{
+                backgroundImage: `linear-gradient(180deg, rgb(250 254 255 / .55), rgb(234 246 251 / .68)), url(${asset.coverPhoto})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center center",
+                backgroundRepeat: "no-repeat",
+              }}
+            >
               <div className="cover-content">
                 <CoutureCrest className="couture-crest--cover" />
                 <p className="eyebrow">The Wedding Of</p>
@@ -1525,10 +1534,7 @@ export default function Home() {
             <div className="person-copy">
               <p className="eyebrow">A beloved son</p>
               <h3>Groom</h3>
-              <p>son of Renato Rosal &amp; Marichu Rosal</p>
-              <a href="https://www.instagram.com/" target="_blank" rel="noreferrer" aria-label="R Instagram">
-                <Instagram size={18} />
-              </a>
+              <p>Son of Renato Rosal &amp; Marichu Rosal</p>
             </div>
           </div>
           <div className="ampersand-divider" aria-hidden="true">&amp;</div>
@@ -1536,10 +1542,7 @@ export default function Home() {
             <div className="person-copy">
               <p className="eyebrow">A cherished daughter</p>
               <h3>Bride</h3>
-              <p>daughter of Damaso Diaz &amp; Susan Diaz</p>
-              <a href="https://www.instagram.com/" target="_blank" rel="noreferrer" aria-label="Rose Jane's Instagram">
-                <Instagram size={18} />
-              </a>
+              <p>Daughter of Damaso Diaz &amp; Susan Diaz</p>
             </div>
             <div className="portrait-wrap portrait-wrap--offset">
               <img src={asset.bride} alt="Bride portrait" />

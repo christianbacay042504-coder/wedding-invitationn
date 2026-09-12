@@ -121,15 +121,25 @@ a {
   margin: 0 auto;
   overflow: clip;
   background: #edf5f8;
-  background-position: center top;
-  background-size: 100% auto;
-  background-repeat: repeat-y;
-  background-attachment: scroll;
   box-shadow: 0 0 80px rgb(53 91 127 / 13%);
   /* The invitation remains composed beneath the opening gate so deep-link, print,
      and full-document captures retain the full heirloom visual story. */
   opacity: 1;
   transition: opacity 550ms cubic-bezier(.23, 1, .32, 1);
+}
+
+.invitation-content::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("/assets/bg1.jpg");
+  background-position: center top;
+  background-size: 100% auto;
+  background-repeat: repeat-y;
+  background-attachment: scroll;
+  opacity: 0.3;
+  pointer-events: none;
+  z-index: 0;
 }
 
 .invitation-content.is-open {
@@ -2460,7 +2470,7 @@ a {
 }
 
 .endless-ornament--bottom {
-  bottom: 192px;
+  bottom: 80px;
   transform: translateX(-50%) rotate(180deg);
 }
 
@@ -2839,9 +2849,9 @@ a {
 
 .person-copy .eyebrow {
   margin-bottom: 8px;
-  color: #527493;
-  font-size: 8px;
-  font-weight: 700;
+  color: #2a4a60;
+  font-size: 16px;
+  font-weight: 900;
   letter-spacing: .14em;
 }
 
@@ -2849,18 +2859,19 @@ a {
   margin: 0;
   color: var(--wine);
   font-family: "Cormorant Garamond", Georgia, serif;
-  font-size: 31px;
-  font-weight: 600;
+  font-size: 42px;
+  font-weight: 900;
   line-height: .98;
-  text-shadow: 0 1px 8px rgb(250 254 255 / .72);
+  text-shadow: 0 2px 8px rgb(250 254 255 / .9);
 }
 
 .person-copy p:not(.eyebrow) {
   margin: 13px 0 17px;
-  color: #436275;
-  font-size: 11px;
+  color: #1a3a50;
+  font-size: 16px;
+  font-weight: 900;
   line-height: 1.55;
-  text-shadow: 0 1px 8px rgb(250 254 255 / .82);
+  text-shadow: 0 2px 6px rgb(250 254 255 / .95);
 }
 
 .person-copy a {
